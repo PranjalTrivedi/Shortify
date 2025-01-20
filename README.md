@@ -36,7 +36,7 @@ Data source -> Multi-user input
 
 - Pranjal Trivedi
 
-1.Allowing users to enable dark mode.
-2.Allowing users to search for news.
-3.Allowing users to filter news.
-4.Allowing users to save articles to a favorites list.
+1. Allowing users to enable dark mode.
+2. Allowing users to search for news.
+3. Allowing users to filter news.
+4. Allowing users to save articles to a favorites list.
