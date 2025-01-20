@@ -28,5 +28,11 @@ Data source -> Multi-user input
 3. Allowing users to bookmark and tag articles.
 4. Allowing users to earn achievement badges for reaching reading milestones.
 
+- Ravikumar Desai
+1. Allowing users to receive notifications.  
+2. Allowing users to change the app’s language.  
+3. Allowing users to create and view customized news feeds on basis of their interests. 
+4. Allowing users to view their history of read articles.
+
 
 
