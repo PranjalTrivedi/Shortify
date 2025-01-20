@@ -34,5 +34,9 @@ Data source -> Multi-user input
 3. Allowing users to create and view customized news feeds on basis of their interests. 
 4. Allowing users to view their history of read articles.
 
+- Pranjal Trivedi
 
-
+1.Allowing users to enable dark mode.
+2.Allowing users to search for news.
+3.Allowing users to filter news.
+4.Allowing users to save articles to a favorites list.
