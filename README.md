@@ -40,3 +40,10 @@ Data source -> Multi-user input
 2. Allowing users to search for news.
 3. Allowing users to filter news.
 4. Allowing users to save articles to a favorites list.
+
+- Parth Patel
+
+1. ⁠Allowing users to share articles.  
+2. ⁠Allowing users to visualize news trends.  
+3. ⁠Allowing users to have an animated splash screen.  
+4. ⁠Allowing users to delete all user data.  
