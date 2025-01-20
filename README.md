@@ -17,6 +17,6 @@ Data source -> Multi-user input
 - Nithin Krishna
 - Ravikumar Desai
 - Pranjal Trivedi
-
+- Parth Patel
 
 
