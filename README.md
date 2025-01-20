@@ -21,4 +21,12 @@ Data source -> Multi-user input
 
 # App features
 
+- Nithin Krishna
+
+1. Allowing users to access an in-app tutorial.
+2. Allowing users to participate in polls or discussions.
+3. Allowing users to bookmark and tag articles.
+4. Allowing users to earn achievement badges for reaching reading milestones.
+
+
 
