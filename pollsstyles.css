@@ -1,0 +1,117 @@
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+.container {
+    width: 60%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.tabs button {
+    padding: 12px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    background: #007bff;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+.tabs button:hover {
+    background: #0056b3;
+}
+.tab-content {
+    display: none;
+    padding: 20px;
+    border-top: 2px solid #ddd;
+}
+.create-poll input, .create-discussion input, .create-discussion textarea {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+button {
+    padding: 12px 25px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+button:hover {
+    background-color: #218838;
+}
+.poll, .discussion {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 15px auto;
+    width: 80%;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+.poll:hover, .discussion:hover {
+    transform: scale(1.02);
+}
+
+.bad {
+    color: red;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        width: 80%;
+    }
+    .poll, .discussion {
+        width: 90%;
+    }
+}
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+    .tabs button {
+        font-size: 14px;
+        padding: 10px;
+    }
+    button {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+    .poll, .discussion {
+        width: 95%;
+    }
+}
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+    .tabs button {
+        font-size: 12px;
+        padding: 8px;
+    }
+    button {
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+    .poll, .discussion {
+        width: 100%;
+        padding: 10px;
+    }
+}
