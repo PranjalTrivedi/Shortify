@@ -13,6 +13,8 @@
             <button onclick="showTab('polls')">Polls</button>
             <button onclick="showTab('discussions')">Discussions</button>
         </div>
+
+     
         <div id="polls" class="tab-content">
             <h2>Polls</h2>
             <div id="pollList"></div>
@@ -20,19 +22,22 @@
                 <input type="text" id="question" placeholder="Enter poll question">
                 <input type="text" id="option1" placeholder="Option 1">
                 <input type="text" id="option2" placeholder="Option 2">
-                <button onclick="createPoll()">Create Poll</button>
+                <button id="createPollBtn">Create Poll</button>
             </div>
         </div>
+
+  
         <div id="discussions" class="tab-content" style="display: none;">
             <h2>Discussions</h2>
             <div id="discussionList"></div>
             <div class="create-discussion">
                 <input type="text" id="discussionTopic" placeholder="Enter discussion topic">
                 <textarea id="discussionContent" placeholder="Enter your discussion"></textarea>
-                <button onclick="createDiscussion()">Start Discussion</button>
+                <button id="createDiscussionBtn">Start Discussion</button>
             </div>
         </div>
     </div>
-    <script src="pollsscript.js"></script>
+
+    <script type="module" src="pollsscript.js"></script>
 </body>
 </html>
