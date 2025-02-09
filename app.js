@@ -10,6 +10,14 @@ const elementsToTranslate = {
   polls: document.getElementById('polls'),
 };
 
+document.getElementById("polls").addEventListener("click", function() {
+        window.location.href = "pollsdiscussions.html";
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("polls").classList.add("highlight");
+  });
+  
 console.log("Elements to translate:", elementsToTranslate);
 
 const loadTranslations = async (language) => {
