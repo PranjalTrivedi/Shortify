@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-import { get, getDatabase, onValue, push, ref, update } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { get, getDatabase, onValue, push, ref, remove, update } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBTCAYvkaKFAsRdnQewEqd8gexgU-O89h0",
@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("createPollBtn").addEventListener("click", createPoll);
+    document.getElementById("createDiscussionBtn").addEventListener("click", createDiscussion);
     
     fetchPolls();
     fetchDiscussions();
@@ -68,7 +69,6 @@ function createPoll() {
     }).catch(error => console.error("Error creating poll:", error));
 }
 
-
 window.vote = function (pollKey, option) {
     const pollRef = ref(db, `polls/${pollKey}/options/${option}`);
 
@@ -80,6 +80,18 @@ window.vote = function (pollKey, option) {
             });
         }
     }).catch(error => console.error("Error voting:", error));
+};
+
+window.deletePoll = function (pollKey) {
+    if (confirm("Are you sure you want to delete this poll?")) {
+        remove(ref(db, `polls/${pollKey}`)).catch(error => console.error("Error deleting poll:", error));
+    }
+};
+
+window.deleteDiscussion = function (discussionKey) {
+    if (confirm("Are you sure you want to delete this discussion?")) {
+        remove(ref(db, `discussions/${discussionKey}`)).catch(error => console.error("Error deleting discussion:", error));
+    }
 };
 
 function fetchPolls() {
@@ -102,6 +114,7 @@ function fetchPolls() {
                         ${option} (${poll.options[option]})
                     </button>
                 `).join("")}
+                <button onclick="deletePoll('${pollKey}')" style="float: right; background-color: darkred; color: white; border: none; padding: 5px 10px; cursor: pointer;">Delete</button>
             `;
             pollList.appendChild(pollElement);
         });
@@ -136,11 +149,13 @@ function fetchDiscussions() {
         }
         snapshot.forEach(childSnapshot => {
             const discussion = childSnapshot.val();
+            const discussionKey = childSnapshot.key;
             const discussionElement = document.createElement("div");
             discussionElement.classList.add("discussion");
             discussionElement.innerHTML = `
                 <h3>${discussion.topic}</h3>
                 <p>${discussion.content}</p>
+                <button onclick="deleteDiscussion('${discussionKey}')" style="float: right; background-color: darkred; color: white; border: none; padding: 5px 10px; cursor: pointer;">Delete</button>
             `;
             discussionList.appendChild(discussionElement);
         });
