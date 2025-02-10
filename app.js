@@ -1,60 +1,51 @@
-console.log("Script loaded!");
+// app.js
 
-const languageSelector = document.getElementById('languageSelector');
-const elementsToTranslate = {
-  welcome: document.getElementById('welcome'),
-  news: document.getElementById('news'),
-  tips: document.getElementById('tips'),
-  stories: document.getElementById('stories'),
-  polls: document.getElementById('polls'),
-  newsDescription: document.getElementById('newsDescription'),
-  tipsDescription: document.getElementById('tipsDescription'),
-  storiesDescription: document.getElementById('storiesDescription'),
-  quizzesDescription: document.getElementById('quizzesDescription'),
-  pollsDescription: document.getElementById('pollsDescription'),
-  pollQuestion: document.getElementById('pollQuestion'),
-  option1: document.getElementById('option1'),
-  option2: document.getElementById('option2'),
-  option3: document.getElementById('option3'),
-  option4: document.getElementById('option4'),
-  option5: document.getElementById('option5'),
-};
+// Sample news data (replace with your actual data source)
+const newsData = [
+  { title: "Breaking News: AI Takes Over", summary: "AI is now dominating the tech industry." },
+  { title: "Climate Change Summit", summary: "World leaders gather to discuss climate change." },
+  { title: "New Smartphone Released", summary: "The latest smartphone with advanced features is now available." },
+  { title: "Stock Market Update", summary: "The stock market sees a significant rise today." },
+  { title: "Health Tips for 2023", summary: "Top health tips to keep you fit this year." }
+];
 
-document.getElementById("polls").addEventListener("click", function() {
-        window.location.href = "pollsdiscussions.html";
-    });
+// Function to display news
+function displayNews(news) {
+  const newsResults = document.getElementById('newsResults');
+  newsResults.innerHTML = ''; // Clear previous results
 
-    document.addEventListener("DOMContentLoaded", function() {
-      document.getElementById("polls").classList.add("highlight");
-  });
-  
-console.log("Elements to translate:", elementsToTranslate);
-
-const loadTranslations = async (language) => {
-  console.log(`Loading translations for ${language}...`);
-  try {
-    const response = await fetch(`src/locales/${language}.json`);
-    const translations = await response.json();
-    console.log("Translations loaded:", translations);
-
-    for (const [key, element] of Object.entries(elementsToTranslate)) {
-      if (element) {
-        element.textContent = translations[key];
-      } else {
-        console.error(`Element with id "${key}" not found.`);
-      }
-    }
-  } catch (error) {
-    console.error("Error loading translations:", error);
+  if (news.length === 0) {
+    newsResults.innerHTML = '<p>No news found.</p>';
+    return;
   }
-};
 
-let currentLanguage = localStorage.getItem('language') || 'en';
-languageSelector.value = currentLanguage;
-loadTranslations(currentLanguage);
+  news.forEach(item => {
+    const newsItem = document.createElement('div');
+    newsItem.className = 'news-item';
+    newsItem.innerHTML = `
+      <h3>${item.title}</h3>
+      <p>${item.summary}</p>
+    `;
+    newsResults.appendChild(newsItem);
+  });
+}
 
-languageSelector.addEventListener('change', (event) => {
-  const newLanguage = event.target.value;
-  localStorage.setItem('language', newLanguage);
-  loadTranslations(newLanguage);
+// Initial display of all news
+displayNews(newsData);
+
+// Search functionality
+document.getElementById('searchButton').addEventListener('click', () => {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const filteredNews = newsData.filter(item => 
+    item.title.toLowerCase().includes(searchTerm) || 
+    item.summary.toLowerCase().includes(searchTerm)
+  );
+  displayNews(filteredNews);
+});
+
+// Optional: Allow pressing Enter to search
+document.getElementById('searchInput').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    document.getElementById('searchButton').click();
+  }
 });
