@@ -6,8 +6,18 @@ const elementsToTranslate = {
   news: document.getElementById('news'),
   tips: document.getElementById('tips'),
   stories: document.getElementById('stories'),
-  quizzes: document.getElementById('quizzes'),
   polls: document.getElementById('polls'),
+  newsDescription: document.getElementById('newsDescription'),
+  tipsDescription: document.getElementById('tipsDescription'),
+  storiesDescription: document.getElementById('storiesDescription'),
+  quizzesDescription: document.getElementById('quizzesDescription'),
+  pollsDescription: document.getElementById('pollsDescription'),
+  pollQuestion: document.getElementById('pollQuestion'),
+  option1: document.getElementById('option1'),
+  option2: document.getElementById('option2'),
+  option3: document.getElementById('option3'),
+  option4: document.getElementById('option4'),
+  option5: document.getElementById('option5'),
 };
 
 document.getElementById("polls").addEventListener("click", function() {

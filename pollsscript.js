@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { get, getDatabase, onValue, push, ref, update } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
-// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBTCAYvkaKFAsRdnQewEqd8gexgU-O89h0",
     authDomain: "info-6134-pos-shortify.firebaseapp.com",
@@ -13,25 +12,24 @@ const firebaseConfig = {
     measurementId: "G-W8FZD2RG9V"
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Elements
+
 const pollList = document.getElementById("pollList");
 const discussionList = document.getElementById("discussionList");
 
-// Tab Switching Function
 function showTab(tabName) {
     document.getElementById("polls").style.display = "none";
     document.getElementById("discussions").style.display = "none";
     document.getElementById(tabName).style.display = "block";
 }
 
-// Expose to global scope
+
 window.showTab = showTab;
 
-// Create Poll
+
 function createPoll() {
     const question = document.getElementById("question").value.trim();
     const option1 = document.getElementById("option1").value.trim();
@@ -70,7 +68,7 @@ window.vote = function (pollKey, option) {
     }).catch(error => console.error("Error voting:", error));
 };
 
-// Fetch and Display Polls
+
 function fetchPolls() {
     const pollRef = ref(db, "polls");
     onValue(pollRef, snapshot => {
@@ -97,7 +95,7 @@ function fetchPolls() {
     }, error => console.error("Error fetching polls:", error));
 }
 
-// Create Discussion
+
 function createDiscussion() {
     const topic = document.getElementById("discussionTopic").value.trim();
     const content = document.getElementById("discussionContent").value.trim();
@@ -116,7 +114,7 @@ function createDiscussion() {
     .catch(error => console.error("Error creating discussion:", error));
 }
 
-// Fetch and Display Discussions
+
 function fetchDiscussions() {
     const discussionRef = ref(db, "discussions");
     onValue(discussionRef, snapshot => {
@@ -138,7 +136,7 @@ function fetchDiscussions() {
     }, error => console.error("Error fetching discussions:", error));
 }
 
-// Event Listeners for Buttons
+
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("createPollBtn").addEventListener("click", createPoll);
     document.getElementById("createDiscussionBtn").addEventListener("click", createDiscussion);

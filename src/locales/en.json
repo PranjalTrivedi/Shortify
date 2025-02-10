@@ -1,9 +1,18 @@
 {
-    "welcome": "Welcome to Shortify",
-    "news": "News",
-    "tips": "Tips",
-    "stories": "Stories",
-    "quizzes": "Quizzes",
-    "polls": "Polls",
-    "changeLanguage": "Change Language"
-  }
+  "welcome": "Welcome to Shortify",
+  "news": "News",
+  "tips": "Tips",
+  "stories": "Stories",
+  "polls": "Polls",
+  "newsDescription": "Stay updated with the latest news in short, easy-to-read summaries.",
+  "tipsDescription": "Discover helpful tips and tricks to make your life easier.",
+  "storiesDescription": "Read inspiring stories from around the world.",
+  "quizzesDescription": "Test your knowledge with fun and engaging quizzes.",
+  "pollsDescription": "Share your opinion and see what others think.",
+  "pollQuestion": "What is your favorite feature of Shortify?",
+  "option1": "News",
+  "option2": "Tips",
+  "option3": "Stories",
+  "option4": "Quizzes",
+  "option5": "Polls"
+}

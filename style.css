@@ -1,0 +1,257 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  
+  header {
+    background-color: #6200ea;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+  
+  #languageSelector {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    color: #6200ea;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #languageSelector:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Navigation Styles */
+  nav {
+    background-color: #3700b3;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  
+  nav a:hover {
+    color: #bb86fc;
+  }
+  
+  /* Section Styles */
+  section {
+    background-color: white;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+  }
+  
+  section h2 {
+    color: #6200ea;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  section p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  
+  /* Poll Styles */
+  .poll-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .poll-option {
+    background-color: #f4f4f9;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    width: 80%;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .poll-option:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Footer Styles */
+  footer {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #6200ea;
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Polls & Discussions Page Styles */
+  .container {
+    width: 60%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tabs button {
+    padding: 12px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    background: #007bff;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+  
+  .tabs button:hover {
+    background: #0056b3;
+  }
+  
+  .tab-content {
+    display: none;
+    padding: 20px;
+    border-top: 2px solid #ddd;
+  }
+  
+  .create-poll input,
+  .create-discussion input,
+  .create-discussion textarea {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 12px 25px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+  
+  button:hover {
+    background-color: #218838;
+  }
+  
+  .poll,
+  .discussion {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 15px auto;
+    width: 80%;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .poll:hover,
+  .discussion:hover {
+    transform: scale(1.02);
+  }
+  
+  .bad {
+    color: red;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .container {
+      width: 80%;
+    }
+  
+    .poll,
+    .discussion {
+      width: 90%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .tabs button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  
+    button {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  
+    .poll,
+    .discussion {
+      width: 95%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      width: 95%;
+      padding: 10px;
+    }
+  
+    .tabs button {
+      font-size: 12px;
+      padding: 8px;
+    }
+  
+    button {
+      font-size: 12px;
+      padding: 8px 15px;
+    }
+  
+    .poll,
+    .discussion {
+      width: 100%;
+      padding: 10px;
+    }
+  }

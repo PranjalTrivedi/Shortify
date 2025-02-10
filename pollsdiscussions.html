@@ -4,11 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shortify Polls & Discussions</title>
-    <link rel="stylesheet" href="pollsstyles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>Shortify Polls & Discussions</h1>
+
+        <header>
+            <h1 id="welcome">Shortify Poll</h1>
+            <select id="languageSelector">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+            </select>
+          </header>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="pollsdiscussions.html">Poll</a>
+          </nav>
+        
         <div class="tabs">
             <button onclick="showTab('polls')">Polls</button>
             <button onclick="showTab('discussions')">Discussions</button>
@@ -17,6 +32,7 @@
      
         <div id="polls" class="tab-content">
             <h2>Polls</h2>
+            
             <div id="pollList"></div>
             <div class="create-poll">
                 <input type="text" id="question" placeholder="Enter poll question">
@@ -39,5 +55,7 @@
     </div>
 
     <script type="module" src="pollsscript.js"></script>
+    
+
 </body>
 </html>
