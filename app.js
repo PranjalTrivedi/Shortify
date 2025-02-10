@@ -7,16 +7,10 @@ function loadLanguage(language) {
       document.getElementById('welcome').innerText = data.welcome;
       document.getElementById('news').innerText = data.news;
       document.getElementById('newsDescription').innerText = data.newsDescription;
-      document.getElementById('polls').innerText = data.polls;
-      document.getElementById('pollQuestion').innerText = data.pollQuestion;
-      document.getElementById('option1').innerText = data.option1;
-      document.getElementById('option2').innerText = data.option2;
-      document.getElementById('option3').innerText = data.option3;
-      document.getElementById('option4').innerText = data.option4;
-      document.getElementById('option5').innerText = data.option5;
+      document.getElementById('newsResults').innerText = data.newsResults;
 
       // Update news section with new language data
-      displayNews(data.newsData);
+      displayNews(data.newsResults);
     })
     .catch(error => {
       console.error("Error loading language file:", error);
