@@ -55,7 +55,7 @@ function createPoll() {
 
     const pollRef = ref(db, "polls");
     const optionsObject = options.reduce((acc, option) => {
-        acc[option] = 0; // Initialize vote count for each option
+        acc[option] = 0; 
         return acc;
     }, {});
 
@@ -68,7 +68,7 @@ function createPoll() {
     }).catch(error => console.error("Error creating poll:", error));
 }
 
-// Vote for Poll Option
+
 window.vote = function (pollKey, option) {
     const pollRef = ref(db, `polls/${pollKey}/options/${option}`);
 
