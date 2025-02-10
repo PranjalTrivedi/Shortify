@@ -4,15 +4,22 @@
   "tips": "Consejos",
   "stories": "Historias",
   "polls": "Encuestas",
-  "newsDescription": "Mantente actualizado con las últimas noticias en resúmenes cortos y fáciles de leer.",
+  "newsDescription": "Mantente al día con las últimas noticias en resúmenes cortos y fáciles de leer.",
   "tipsDescription": "Descubre consejos y trucos útiles para hacer tu vida más fácil.",
   "storiesDescription": "Lee historias inspiradoras de todo el mundo.",
-  "quizzesDescription": "Pon a prueba tus conocimientos con cuestionarios divertidos y atractivos.",
-  "pollsDescription": "Comparte tu opinión y mira lo que piensan los demás.",
-  "pollQuestion": "¿Cuál es tu función favorita de Shortify?",
+  "quizzesDescription": "Pon a prueba tus conocimientos con divertidas y atractivas encuestas.",
+  "pollsDescription": "Comparte tu opinión y ve lo que piensan los demás.",
+  "pollQuestion": "¿Cuál es tu característica favorita de Shortify?",
   "option1": "Noticias",
   "option2": "Consejos",
   "option3": "Historias",
-  "option4": "Cuestionarios",
-  "option5": "Encuestas"
+  "option4": "Encuestas",
+  "option5": "Encuestas",
+  "newsData": [
+    { "title": "Últimas Noticias: IA Toma el Control", "summary": "La IA ahora domina la industria tecnológica." },
+    { "title": "Cumbre sobre el Cambio Climático", "summary": "Los líderes mundiales se reúnen para discutir el cambio climático." },
+    { "title": "Nuevo Smartphone Lanzado", "summary": "El último smartphone con características avanzadas ya está disponible." },
+    { "title": "Actualización del Mercado de Valores", "summary": "El mercado de valores experimenta un aumento significativo hoy." },
+    { "title": "Consejos de Salud para 2023", "summary": "Los mejores consejos de salud para mantenerte en forma este año." }
+  ]
 }

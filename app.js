@@ -1,13 +1,27 @@
-// app.js
+// Function to load language JSON file based on the selected language
+function loadLanguage(language) {
+  fetch(`src/locales/${language}.json`)
+    .then(response => response.json())
+    .then(data => {
+      // Update all page text with the translations
+      document.getElementById('welcome').innerText = data.welcome;
+      document.getElementById('news').innerText = data.news;
+      document.getElementById('newsDescription').innerText = data.newsDescription;
+      document.getElementById('polls').innerText = data.polls;
+      document.getElementById('pollQuestion').innerText = data.pollQuestion;
+      document.getElementById('option1').innerText = data.option1;
+      document.getElementById('option2').innerText = data.option2;
+      document.getElementById('option3').innerText = data.option3;
+      document.getElementById('option4').innerText = data.option4;
+      document.getElementById('option5').innerText = data.option5;
 
-// Sample news data (replace with your actual data source)
-const newsData = [
-  { title: "Breaking News: AI Takes Over", summary: "AI is now dominating the tech industry." },
-  { title: "Climate Change Summit", summary: "World leaders gather to discuss climate change." },
-  { title: "New Smartphone Released", summary: "The latest smartphone with advanced features is now available." },
-  { title: "Stock Market Update", summary: "The stock market sees a significant rise today." },
-  { title: "Health Tips for 2023", summary: "Top health tips to keep you fit this year." }
-];
+      // Update news section with new language data
+      displayNews(data.newsData);
+    })
+    .catch(error => {
+      console.error("Error loading language file:", error);
+    });
+}
 
 // Function to display news
 function displayNews(news) {
@@ -30,6 +44,15 @@ function displayNews(news) {
   });
 }
 
+// Sample news data (this will be replaced by data from language files)
+const newsData = [
+  { title: "Breaking News: AI Takes Over", summary: "AI is now dominating the tech industry." },
+  { title: "Climate Change Summit", summary: "World leaders gather to discuss climate change." },
+  { title: "New Smartphone Released", summary: "The latest smartphone with advanced features is now available." },
+  { title: "Stock Market Update", summary: "The stock market sees a significant rise today." },
+  { title: "Health Tips for 2023", summary: "Top health tips to keep you fit this year." }
+];
+
 // Initial display of all news
 displayNews(newsData);
 
@@ -48,4 +71,10 @@ document.getElementById('searchInput').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     document.getElementById('searchButton').click();
   }
+});
+
+// Change language based on selection
+document.getElementById('languageSelector').addEventListener('change', (e) => {
+  const selectedLanguage = e.target.value;
+  loadLanguage(selectedLanguage);
 });

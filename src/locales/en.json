@@ -1,18 +1,25 @@
 {
-  "welcome": "Welcome to Shortify",
-  "news": "News",
-  "tips": "Tips",
-  "stories": "Stories",
-  "polls": "Polls",
-  "newsDescription": "Stay updated with the latest news in short, easy-to-read summaries.",
-  "tipsDescription": "Discover helpful tips and tricks to make your life easier.",
-  "storiesDescription": "Read inspiring stories from around the world.",
-  "quizzesDescription": "Test your knowledge with fun and engaging quizzes.",
-  "pollsDescription": "Share your opinion and see what others think.",
-  "pollQuestion": "What is your favorite feature of Shortify?",
-  "option1": "News",
-  "option2": "Tips",
-  "option3": "Stories",
-  "option4": "Quizzes",
-  "option5": "Polls"
-}
+    "welcome": "Welcome to Shortify",
+    "news": "News",
+    "tips": "Tips",
+    "stories": "Stories",
+    "polls": "Polls",
+    "newsDescription": "Stay updated with the latest news in short, easy-to-read summaries.",
+    "tipsDescription": "Discover helpful tips and tricks to make your life easier.",
+    "storiesDescription": "Read inspiring stories from around the world.",
+    "quizzesDescription": "Test your knowledge with fun and engaging quizzes.",
+    "pollsDescription": "Share your opinion and see what others think.",
+    "pollQuestion": "What is your favorite feature of Shortify?",
+    "option1": "News",
+    "option2": "Tips",
+    "option3": "Stories",
+    "option4": "Quizzes",
+    "option5": "Polls",
+    "newsData": [
+      { "title": "Breaking News: AI Takes Over", "summary": "AI is now dominating the tech industry." },
+      { "title": "Climate Change Summit", "summary": "World leaders gather to discuss climate change." },
+      { "title": "New Smartphone Released", "summary": "The latest smartphone with advanced features is now available." },
+      { "title": "Stock Market Update", "summary": "The stock market sees a significant rise today." },
+      { "title": "Health Tips for 2023", "summary": "Top health tips to keep you fit this year." }
+    ]
+  }

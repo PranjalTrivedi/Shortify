@@ -1,18 +1,25 @@
 {
   "welcome": "Bienvenue sur Shortify",
-  "news": "Nouvelles",
-  "tips": "Conseils",
+  "news": "Actualités",
+  "tips": "Astuces",
   "stories": "Histoires",
   "polls": "Sondages",
-  "newsDescription": "Restez informé avec les dernières nouvelles dans des résumés courts et faciles à lire.",
-  "tipsDescription": "Découvrez des astuces utiles pour vous faciliter la vie.",
+  "newsDescription": "Restez à jour avec les dernières nouvelles dans des résumés courts et faciles à lire.",
+  "tipsDescription": "Découvrez des astuces utiles pour faciliter votre vie.",
   "storiesDescription": "Lisez des histoires inspirantes du monde entier.",
   "quizzesDescription": "Testez vos connaissances avec des quiz amusants et engageants.",
-  "pollsDescription": "Partagez votre opinion et voyez ce que les autres pensent.",
+  "pollsDescription": "Partagez votre avis et voyez ce que pensent les autres.",
   "pollQuestion": "Quelle est votre fonctionnalité préférée de Shortify ?",
-  "option1": "Nouvelles",
-  "option2": "Conseils",
+  "option1": "Actualités",
+  "option2": "Astuces",
   "option3": "Histoires",
   "option4": "Quiz",
-  "option5": "Sondages"
+  "option5": "Sondages",
+  "newsData": [
+    { "title": "Actualités de dernière minute: L'IA prend le contrôle", "summary": "L'IA domine désormais l'industrie technologique." },
+    { "title": "Sommet sur le Changement Climatique", "summary": "Les dirigeants mondiaux se réunissent pour discuter du changement climatique." },
+    { "title": "Nouveau Smartphone Lancé", "summary": "Le dernier smartphone avec des fonctionnalités avancées est désormais disponible." },
+    { "title": "Mise à jour du Marché Boursier", "summary": "Le marché boursier connaît une hausse significative aujourd'hui." },
+    { "title": "Conseils de Santé pour 2023", "summary": "Les meilleurs conseils de santé pour vous garder en forme cette année." }
+  ]
 }
