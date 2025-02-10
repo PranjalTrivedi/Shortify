@@ -15,6 +15,91 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+
+const translations = {
+    en: {
+        welcome: "Shortify Poll",
+        home: "Home",
+        poll: "Poll",
+        polls: "Polls",
+        discussions: "Discussions",
+        enterPoll: "Enter poll question",
+        enterOption: "Option",
+        addOption: "Add Option",
+        createPoll: "Create Poll",
+        enterDiscussion: "Enter discussion topic",
+        enterContent: "Enter your discussion",
+        startDiscussion: "Start Discussion",
+        noPolls: "No polls available.",
+        noDiscussions: "No discussions available."
+    },
+    es: {
+        welcome: "Encuesta de Shortify",
+        home: "Inicio",
+        poll: "Encuesta",
+        polls: "Encuestas",
+        discussions: "Discusiones",
+        enterPoll: "Ingrese la pregunta de la encuesta",
+        enterOption: "Opción",
+        addOption: "Agregar opción",
+        createPoll: "Crear encuesta",
+        enterDiscussion: "Ingrese el tema de discusión",
+        enterContent: "Ingrese su discusión",
+        startDiscussion: "Iniciar discusión",
+        noPolls: "No hay encuestas disponibles.",
+        noDiscussions: "No hay discusiones disponibles."
+    },
+    fr: {
+        welcome: "Sondage Shortify",
+        home: "Accueil",
+        poll: "Sondage",
+        polls: "Sondages",
+        discussions: "Discussions",
+        enterPoll: "Entrez la question du sondage",
+        enterOption: "Option",
+        addOption: "Ajouter une option",
+        createPoll: "Créer un sondage",
+        enterDiscussion: "Entrez le sujet de discussion",
+        enterContent: "Entrez votre discussion",
+        startDiscussion: "Démarrer la discussion",
+        noPolls: "Aucun sondage disponible.",
+        noDiscussions: "Aucune discussion disponible."
+    }
+};
+
+// Function to update UI with selected language
+function updateLanguage(lang) {
+    document.getElementById("welcome").textContent = translations[lang].welcome;
+    document.querySelector("nav a[href='index.html']").textContent = translations[lang].home;
+    document.querySelector("nav a[href='pollsdiscussions.html']").textContent = translations[lang].poll;
+    document.querySelector(".tabs button:nth-child(1)").textContent = translations[lang].polls;
+    document.querySelector(".tabs button:nth-child(2)").textContent = translations[lang].discussions;
+    document.getElementById("question").placeholder = translations[lang].enterPoll;
+    document.querySelectorAll(".option").forEach((el, index) => el.placeholder = `${translations[lang].enterOption} ${index + 1}`);
+    document.getElementById("addOptionBtn").textContent = translations[lang].addOption;
+    document.getElementById("createPollBtn").textContent = translations[lang].createPoll;
+    document.getElementById("discussionTopic").placeholder = translations[lang].enterDiscussion;
+    document.getElementById("discussionContent").placeholder = translations[lang].enterContent;
+    document.getElementById("createDiscussionBtn").textContent = translations[lang].startDiscussion;
+
+    if (document.getElementById("pollList").innerHTML.includes("No polls available.")) {
+        document.getElementById("pollList").innerHTML = `<p>${translations[lang].noPolls}</p>`;
+    }
+
+    if (document.getElementById("discussionList").innerHTML.includes("No discussions available.")) {
+        document.getElementById("discussionList").innerHTML = `<p>${translations[lang].noDiscussions}</p>`;
+    }
+}
+
+// Add event listener for language selection
+document.getElementById("languageSelector").addEventListener("change", function () {
+    updateLanguage(this.value);
+});
+
+// Initialize with default language
+updateLanguage("en");
+
+
 const pollList = document.getElementById("pollList");
 const discussionList = document.getElementById("discussionList");
 

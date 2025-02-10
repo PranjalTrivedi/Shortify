@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shortify Polls & Discussions</title>
+    <title id="pageTitle">Shortify Polls & Discussions</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const translations = {
+                en: "Shortify Polls & Discussions",
+                es: "Encuestas y Discusiones de Shortify",
+                fr: "Sondages et Discussions Shortify"
+            };
+
+            const languageSelector = document.getElementById("languageSelector");
+            languageSelector.addEventListener("change", () => {
+                document.getElementById("pageTitle").textContent = translations[languageSelector.value];
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
-        <h1>Shortify Polls & Discussions</h1>
+        <h1 id="welcome">Shortify Poll</h1>
 
         <header>
             <h1 id="welcome">Shortify Poll</h1>
@@ -58,7 +72,5 @@
     </div>
 
     <script type="module" src="pollsscript.js"></script>
-    
-
 </body>
 </html>
