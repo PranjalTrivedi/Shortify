@@ -36,8 +36,11 @@
             <div id="pollList"></div>
             <div class="create-poll">
                 <input type="text" id="question" placeholder="Enter poll question">
-                <input type="text" id="option1" placeholder="Option 1">
-                <input type="text" id="option2" placeholder="Option 2">
+                <div id="options-container">
+                    <input type="text" class="option" placeholder="Option 1">
+                    <input type="text" class="option" placeholder="Option 2">
+                </div>
+                <button id="addOptionBtn">Add Option</button>
                 <button id="createPollBtn">Create Poll</button>
             </div>
         </div>

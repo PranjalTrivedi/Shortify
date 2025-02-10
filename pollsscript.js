@@ -12,10 +12,8 @@ const firebaseConfig = {
     measurementId: "G-W8FZD2RG9V"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
 
 const pollList = document.getElementById("pollList");
 const discussionList = document.getElementById("discussionList");
@@ -26,31 +24,47 @@ function showTab(tabName) {
     document.getElementById(tabName).style.display = "block";
 }
 
-
 window.showTab = showTab;
 
+document.addEventListener("DOMContentLoaded", () => {
+    const addOptionBtn = document.getElementById("addOptionBtn");
+    const optionsContainer = document.getElementById("options-container");
+
+    addOptionBtn.addEventListener("click", () => {
+        const optionInput = document.createElement("input");
+        optionInput.type = "text";
+        optionInput.className = "option";
+        optionInput.placeholder = `Option ${optionsContainer.children.length + 1}`;
+        optionsContainer.appendChild(optionInput);
+    });
+
+    document.getElementById("createPollBtn").addEventListener("click", createPoll);
+    
+    fetchPolls();
+    fetchDiscussions();
+});
 
 function createPoll() {
     const question = document.getElementById("question").value.trim();
-    const option1 = document.getElementById("option1").value.trim();
-    const option2 = document.getElementById("option2").value.trim();
+    const options = Array.from(document.querySelectorAll(".option")).map(option => option.value.trim());
 
-    if (!question || !option1 || !option2) {
+    if (!question || options.some(option => !option)) {
         alert("Please fill all fields!");
         return;
     }
 
     const pollRef = ref(db, "polls");
+    const optionsObject = options.reduce((acc, option) => {
+        acc[option] = 0; // Initialize vote count for each option
+        return acc;
+    }, {});
+
     push(pollRef, {
         question,
-        options: {
-            [option1]: 0,
-            [option2]: 0
-        }
+        options: optionsObject
     }).then(() => {
         document.getElementById("question").value = "";
-        document.getElementById("option1").value = "";
-        document.getElementById("option2").value = "";
+        document.querySelectorAll(".option").forEach(option => option.value = "");
     }).catch(error => console.error("Error creating poll:", error));
 }
 
@@ -67,7 +81,6 @@ window.vote = function (pollKey, option) {
         }
     }).catch(error => console.error("Error voting:", error));
 };
-
 
 function fetchPolls() {
     const pollRef = ref(db, "polls");
@@ -95,7 +108,6 @@ function fetchPolls() {
     }, error => console.error("Error fetching polls:", error));
 }
 
-
 function createDiscussion() {
     const topic = document.getElementById("discussionTopic").value.trim();
     const content = document.getElementById("discussionContent").value.trim();
@@ -113,7 +125,6 @@ function createDiscussion() {
     })
     .catch(error => console.error("Error creating discussion:", error));
 }
-
 
 function fetchDiscussions() {
     const discussionRef = ref(db, "discussions");
@@ -135,12 +146,3 @@ function fetchDiscussions() {
         });
     }, error => console.error("Error fetching discussions:", error));
 }
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("createPollBtn").addEventListener("click", createPoll);
-    document.getElementById("createDiscussionBtn").addEventListener("click", createDiscussion);
-    
-    fetchPolls();
-    fetchDiscussions();
-});
