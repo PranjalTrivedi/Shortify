@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Detail</title>
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+  <header>
+    <h1 id="welcome">News Detail</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="pollsdiscussions.html">Poll</a>
+  </nav>
+
+  <section>
+    <div id="newsDetail"></div>
+    <button id="backButton">Back</button>
+  </section>
+
+  <footer>
+    <p>Made with ❤️ by <a href="https://github.com/PranjalTrivedi" target="_blank">group 10</a></p>
+  </footer>
+
+  <script>
+   
+    function loadNewsDetail() {
+      const selectedNews = JSON.parse(localStorage.getItem('selectedNews'));
+      if (!selectedNews) {
+        document.getElementById('newsDetail').innerHTML = '<p>No news found.</p>';
+        return;
+      }
+
+      document.getElementById('newsDetail').innerHTML = `
+        <h1>${selectedNews.title}</h1>
+        <p>${selectedNews.news}</p>
+      `;
+    }
+
+  
+    document.getElementById('backButton').addEventListener('click', () => {
+      window.history.back(); 
+    });
+
+  
+    loadNewsDetail();
+  </script>
+</body>
+</html>

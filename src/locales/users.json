@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "userId": "user123",
+      "readCount": 2,
+      "badge": ""
+    },
+    {
+      "userId": "user456",
+      "readCount": 15,
+      "badge": "Silver"
+    }
+  ]
+}

@@ -309,3 +309,44 @@ body {
 .news-item p {
   margin: 5px 0 0;
 }
+
+/* Existing styles */
+
+/* New News Detail Page Styles */
+#newsDetail {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+#newsDetail h1 {
+  color: #6200ea;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+#newsDetail p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Back Button */
+#backButton {
+  padding: 10px 20px;
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+#backButton:hover {
+  background-color: #3700b3;
+}
