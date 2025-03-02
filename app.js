@@ -173,7 +173,7 @@ function markAsRead(userId) {
 }
 
 
-const userId = 'user456'; 
+const userId = 'user123'; 
 
 
 getUserData(userId)
