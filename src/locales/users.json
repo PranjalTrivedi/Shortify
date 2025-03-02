@@ -2,13 +2,13 @@
   "users": [
     {
       "userId": "user123",
-      "readCount": 3,
-      "badge": ""
+      "readCount": 15,
+      "badge": "Silver"
     },
     {
       "userId": "user456",
-      "readCount": 15,
-      "badge": "Silver"
+      "readCount": 50,
+      "badge": "Gold"
     }
   ]
 }
