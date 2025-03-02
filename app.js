@@ -1,15 +1,15 @@
-// Function to load language JSON file based on the selected language
+
 function loadLanguage(language) {
   fetch(`src/locales/${language}.json`)
     .then(response => response.json())
     .then(data => {
-      // Update all page text with the translations
+    
       document.getElementById('welcome').innerText = data.welcome;
       document.getElementById('news').innerText = data.news;
       document.getElementById('newsDescription').innerText = data.newsDescription;
       document.getElementById('newsResults').innerText = data.newsResults;
 
-      // Update news section with new language data
+  
       displayNews(data.newsResults);
     })
     .catch(error => {
@@ -17,10 +17,10 @@ function loadLanguage(language) {
     });
 }
 
-// Function to display news
+
 function displayNews(news) {
   const newsResults = document.getElementById('newsResults');
-  newsResults.innerHTML = ''; // Clear previous results
+  newsResults.innerHTML = ''; 
 
   if (news.length === 0) {
     newsResults.innerHTML = '<p>No news found.</p>';
@@ -37,12 +37,12 @@ function displayNews(news) {
     `;
     newsResults.appendChild(newsItem);
 
-    // Attach event listener to each "Read" button
+
     newsItem.querySelector('.read-button').addEventListener('click', (e) => {
       const newsIndex = e.target.getAttribute('data-index');
-      // Store the news data in localStorage before navigating to the detail page
+ 
       localStorage.setItem('selectedNews', JSON.stringify(newsData[newsIndex]));
-      // Navigate to the detailed news page
+  
       markAsRead(userId);
       window.location.href = 'newsDetail.html';
     });
@@ -50,7 +50,7 @@ function displayNews(news) {
 }
 
 
-// Sample news data (this will be replaced by data from language files)
+
 const newsData = [
   { 
     title: "Breaking News: AI Takes Over", 
@@ -80,10 +80,10 @@ const newsData = [
 ];
 
 
-// Initial display of all news
+
 displayNews(newsData);
 
-// Search functionality
+
 document.getElementById('searchButton').addEventListener('click', () => {
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
   const filteredNews = newsData.filter(item => 
@@ -100,12 +100,12 @@ document.getElementById('searchInput').addEventListener('keypress', (e) => {
   }
 });
 
-// Change language based on selection
+
 document.getElementById('languageSelector').addEventListener('change', (e) => {
   const selectedLanguage = e.target.value;
   loadLanguage(selectedLanguage);
 });
-// Function to fetch user data from the backend
+
 function getUserData(userId) {
   return fetch(`http://localhost:3000/users`)
     .then(response => response.json())
@@ -114,7 +114,7 @@ function getUserData(userId) {
     });
 }
 
-// Function to save user badge data to backend
+
 async function saveUserData(userId, readCount, badge) {
   const userData = { userId, readCount, badge };
   
@@ -133,7 +133,7 @@ async function saveUserData(userId, readCount, badge) {
   }
 }
 
-// Function to update the badge based on the read count
+
 function updateBadge(userId, readCount) {
   console.log("called updatyebadge");
   
@@ -151,7 +151,7 @@ function updateBadge(userId, readCount) {
 
   saveUserData(userId, readCount, badge);
 
-  // Display the badge
+
   const badgeElement = document.getElementById('badge');
   if (badgeElement) {
     badgeElement.innerText = `Badge: ${badge}`;
@@ -163,7 +163,7 @@ function updateBadge(userId, readCount) {
   }
 }
 
-// Function to handle the news read action
+
 function markAsRead(userId) {
   getUserData(userId)
     .then(userData => {
@@ -172,9 +172,9 @@ function markAsRead(userId) {
     });
 }
 
-// Sample user ID (in a real app, this would be dynamically fetched)
-const userId = 'user456'; // This can be dynamic, based on logged-in user
 
-// Initialize the page with the user's current badge and read count
+const userId = 'user456'; 
+
+
 getUserData(userId)
   .then(userData => updateBadge(userId, userData.readCount));
