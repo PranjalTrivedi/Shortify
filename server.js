@@ -1,73 +1,70 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
+
 const app = express();
 const PORT = 3000;
+const USERS_FILE = path.join(__dirname, 'src', 'locales', 'users.json');
 
+// Middleware
 app.use(express.json());
-
+app.use(cors()); // Enable CORS
 app.use(express.static(path.join(__dirname, '/')));
 
-app.get('/users', (req, res) => {
-    fs.readFile(path.join(__dirname, 'src', 'locales', 'users.json'), 'utf8', (err, data) => {
-      if (err) {
-        return res.status(500).json({ error: 'Unable to read users data.' });
-      }
-  
-      let users;
-      try {
-        const parsedData = JSON.parse(data);
-        console.log(parsedData);
+// Utility function to read user data
+const readUsersData = (callback) => {
+    fs.readFile(USERS_FILE, 'utf8', (err, data) => {
+        if (err) return callback({ error: 'Unable to read users data.' }, null);
         
-        users = parsedData.users; 
-        if (!Array.isArray(users)) {
-          throw new Error('Users data is not an array');
+        try {
+            const parsedData = JSON.parse(data);
+            if (!Array.isArray(parsedData.users)) throw new Error('Users data is not an array');
+            callback(null, parsedData.users);
+        } catch (error) {
+            callback({ error: 'Invalid users data format.' }, null);
         }
-      } catch (error) {
-        return res.status(500).json({ error: 'Invalid users data format.' });
-      }
-  
-      res.json(users);
     });
-  });
-  
-  app.post('/users', (req, res) => {
-    const userData = req.body;
-  
-    fs.readFile(path.join(__dirname, 'src', 'locales', 'users.json'), 'utf8', (err, data) => {
-      if (err) {
-        return res.status(500).json({ error: 'Unable to read users data.' });
-      }
-  
-      let users;
-      try {
-        const parsedData = JSON.parse(data);
-        users = parsedData.users; 
-        if (!Array.isArray(users)) {
-          throw new Error('Users data is not an array');
-        }
-      } catch (error) {
-        return res.status(500).json({ error: 'Invalid users data format.' });
-      }
-  
-      const userIndex = users.findIndex(user => user.userId === userData.userId);
-  
-      if (userIndex > -1) {
-        users[userIndex] = userData;
-      } else {
-        users.push(userData);
-      }
-  
-  
-      fs.writeFile(path.join(__dirname, 'src', 'locales', 'users.json'), JSON.stringify({ users }, null, 2), 'utf8', (err) => {
-        if (err) {
-          return res.status(500).json({ error: 'Unable to save users data.' });
-        }
-        res.json({ message: 'User data saved successfully.' });
-      });
-    });
-  });
+};
 
+// Utility function to write user data
+const writeUsersData = (users, callback) => {
+    fs.writeFile(USERS_FILE, JSON.stringify({ users }, null, 2), 'utf8', (err) => {
+        if (err) return callback({ error: 'Unable to save users data.' });
+        callback(null);
+    });
+};
+
+// Get users
+app.get('/users', (req, res) => {
+    readUsersData((error, users) => {
+        if (error) return res.status(500).json(error);
+        res.json(users);
+    });
+});
+
+// Add or update user
+app.post('/users', (req, res) => {
+    const userData = req.body;
+    
+    readUsersData((error, users) => {
+        if (error) return res.status(500).json(error);
+        
+        const userIndex = users.findIndex(user => user.userId === userData.userId);
+        if (userIndex > -1) {
+            users[userIndex] = userData; // Update existing user
+        } else {
+            users.push(userData); // Add new user
+        }
+
+        writeUsersData(users, (error) => {
+            if (error) return res.status(500).json(error);
+            res.json({ message: 'User data saved successfully.' });
+        });
+    });
+});
+
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
