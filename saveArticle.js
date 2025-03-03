@@ -1,8 +1,5 @@
 import { db, auth } from "./firebase-config.js";
-import {
-  doc,
-  setDoc,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const saveBtn = document.getElementById("save-article-btn");
@@ -15,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
   saveBtn.addEventListener("click", async () => {
     console.log("Save button clicked!");
 
-    // Check if article elements exist
     const articleTitle = document.getElementById("article-title");
     const articleContent = document.getElementById("article-content");
 
@@ -42,21 +38,29 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("User UID:", user.uid);
 
     try {
-      const articleRef = doc(
-        db,
-        "users",
-        user.uid,
-        "savedArticles",
-        `${Date.now()}`
-      );
+      const articleRef = doc(db, "users", user.uid, "savedArticles", `${Date.now()}`);
       console.log("Firestore path:", articleRef.path);
 
       await setDoc(articleRef, {
         ...article,
         savedAt: new Date(),
       });
+
       console.log("Article saved successfully!");
       alert("Article saved successfully!");
+
+      // Request notification permission if not already granted
+      if (Notification.permission === "default") {
+        await Notification.requestPermission();
+      }
+
+      // Show a notification if permission is granted
+      if (Notification.permission === "granted") {
+        new Notification("Article Saved!", {
+          body: `"${article.title}" has been saved successfully.`,
+          icon: "/path-to-your-icon.png", // Change this to your app's icon
+        });
+      }
     } catch (error) {
       console.error("Error saving article:", error);
       alert("Failed to save article. Please try again.");
