@@ -105,14 +105,28 @@ document.getElementById('languageSelector').addEventListener('change', (e) => {
   const selectedLanguage = e.target.value;
   loadLanguage(selectedLanguage);
 });
-
-function getUserData(userId) {
-  return fetch(`http://localhost:3000/users`)
-    .then(response => response.json())
-    .then(users => {
-      return users.find(user => user.userId === userId) || { userId, readCount: 0, badge: '' };
-    });
+async function getUserData() {
+  try {
+    const response = await fetch("http://localhost:3000/users");
+    
+    // Debugging: Check if the response is valid JSON
+    const text = await response.text();
+    console.log("Raw response:", text);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    // Parse JSON only if it's valid
+    const data = JSON.parse(text);
+    console.log("User data:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
 }
+
+getUserData();
 
 
 async function saveUserData(userId, readCount, badge) {
