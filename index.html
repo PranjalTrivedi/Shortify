@@ -1,41 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shortify</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1 id="welcome">Welcome to Shortify</h1>
-    <div class="search-container">
-      <input type="text" id="searchInput" placeholder="Search news...">
-      <button id="searchButton">Search</button>
-    </div>
-    <select id="languageSelector">
-      <option value="en">English</option>
-      <option value="es">Español</option>
-      <option value="fr">Français</option>
-    </select>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shortify</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1 id="welcome">Welcome to Shortify</h1>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search news..." />
+        <button id="searchButton">Search</button>
+      </div>
+      <select id="languageSelector">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+      </select>
+    </header>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="pollsdiscussions.html">Poll</a>
-  </nav>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="pollsdiscussions.html">Poll</a>
+      <a href="savedArticles.html">Saved Articles</a>
+      <a href="profile.html">Profile</a>
+      <button id="login-btn">Login</button>
+      <button id="logout-btn" style="display: none">Logout</button>
+    </nav>
 
-  <section>
-    <h2 id="news">News</h2>
-    <p id="newsDescription">Stay updated with the latest news in short, easy-to-read summaries.</p>
-    <div id="newsResults"></div>
-  </section>
+    <section>
+      <h2 id="news">News</h2>
+      <p id="newsDescription">
+        Stay updated with the latest news in short, easy-to-read summaries.
+      </p>
+      <div id="newsResults"></div>
+    </section>
 
-  <footer>
-    <p>Made with ❤️ by <a href="https://github.com/PranjalTrivedi" target="_blank">group 10</a></p>
-  </footer>
+    <footer>
+      <p>
+        Made with ❤️ by
+        <a href="https://github.com/PranjalTrivedi" target="_blank">group 10</a>
+      </p>
+    </footer>
 
-  <script type="module" src="app.js"></script>
-  <script src="firebase-messaging-sw.js"></script>
-</body>
+    <script type="module" src="app.js"></script>
+    <script src="firebase-messaging-sw.js"></script>
+
+    <script type="module">
+      import { auth } from "./firebase-config.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const loginBtn = document.getElementById("login-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "block";
+        } else {
+          loginBtn.style.display = "block";
+          logoutBtn.style.display = "none";
+        }
+      });
+
+      loginBtn.addEventListener("click", () => {
+        window.location.href = "login.html";
+      });
+
+      logoutBtn.addEventListener("click", async () => {
+        await signOut(auth);
+        window.location.href = "login.html";
+      });
+    </script>
+  </body>
 </html>

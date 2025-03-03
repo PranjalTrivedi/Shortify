@@ -1,76 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title id="pageTitle">Shortify Polls & Discussions</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const translations = {
-                en: "Shortify Polls & Discussions",
-                es: "Encuestas y Discusiones de Shortify",
-                fr: "Sondages et Discussions Shortify"
-            };
+      document.addEventListener("DOMContentLoaded", () => {
+        const translations = {
+          en: "Shortify Polls & Discussions",
+          es: "Encuestas y Discusiones de Shortify",
+          fr: "Sondages et Discussions Shortify",
+        };
 
-            const languageSelector = document.getElementById("languageSelector");
-            languageSelector.addEventListener("change", () => {
-                document.getElementById("pageTitle").textContent = translations[languageSelector.value];
-            });
+        const languageSelector = document.getElementById("languageSelector");
+        languageSelector.addEventListener("change", () => {
+          document.getElementById("pageTitle").textContent =
+            translations[languageSelector.value];
         });
+      });
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
+      <h1 id="welcome">Shortify Poll</h1>
+
+      <header>
         <h1 id="welcome">Shortify Poll</h1>
+        <select id="languageSelector">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+        </select>
+      </header>
 
-        <header>
-            <h1 id="welcome">Shortify Poll</h1>
-            <select id="languageSelector">
-              <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-            </select>
-          </header>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="pollsdiscussions.html">Poll</a>
+        <a href="savedArticles.html">Saved Articles</a>
+        <a href="profile.html">Profile</a>
+        <button id="login-btn">Login</button>
+        <button id="logout-btn" style="display: none">Logout</button>
+      </nav>
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="pollsdiscussions.html">Poll</a>
-          </nav>
-        
-        <div class="tabs">
-            <button onclick="showTab('polls')">Polls</button>
-            <button onclick="showTab('discussions')">Discussions</button>
+      <div class="tabs">
+        <button onclick="showTab('polls')">Polls</button>
+        <button onclick="showTab('discussions')">Discussions</button>
+      </div>
+
+      <div id="polls" class="tab-content">
+        <h2>Polls</h2>
+
+        <div id="pollList"></div>
+        <div class="create-poll">
+          <input type="text" id="question" placeholder="Enter poll question" />
+          <div id="options-container">
+            <input type="text" class="option" placeholder="Option 1" />
+            <input type="text" class="option" placeholder="Option 2" />
+          </div>
+          <button id="addOptionBtn">Add Option</button>
+          <button id="createPollBtn">Create Poll</button>
         </div>
+      </div>
 
-     
-        <div id="polls" class="tab-content">
-            <h2>Polls</h2>
-            
-            <div id="pollList"></div>
-            <div class="create-poll">
-                <input type="text" id="question" placeholder="Enter poll question">
-                <div id="options-container">
-                    <input type="text" class="option" placeholder="Option 1">
-                    <input type="text" class="option" placeholder="Option 2">
-                </div>
-                <button id="addOptionBtn">Add Option</button>
-                <button id="createPollBtn">Create Poll</button>
-            </div>
+      <div id="discussions" class="tab-content" style="display: none">
+        <h2>Discussions</h2>
+        <div id="discussionList"></div>
+        <div class="create-discussion">
+          <input
+            type="text"
+            id="discussionTopic"
+            placeholder="Enter discussion topic"
+          />
+          <textarea
+            id="discussionContent"
+            placeholder="Enter your discussion"
+          ></textarea>
+          <button id="createDiscussionBtn">Start Discussion</button>
         </div>
-
-  
-        <div id="discussions" class="tab-content" style="display: none;">
-            <h2>Discussions</h2>
-            <div id="discussionList"></div>
-            <div class="create-discussion">
-                <input type="text" id="discussionTopic" placeholder="Enter discussion topic">
-                <textarea id="discussionContent" placeholder="Enter your discussion"></textarea>
-                <button id="createDiscussionBtn">Start Discussion</button>
-            </div>
-        </div>
+      </div>
     </div>
 
     <script type="module" src="pollsscript.js"></script>
-</body>
+
+    <script type="module">
+      import { auth } from "./firebase-config.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const loginBtn = document.getElementById("login-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "block";
+        } else {
+          loginBtn.style.display = "block";
+          logoutBtn.style.display = "none";
+        }
+      });
+
+      loginBtn.addEventListener("click", () => {
+        window.location.href = "login.html";
+      });
+
+      logoutBtn.addEventListener("click", async () => {
+        await signOut(auth);
+      });
+    </script>
+  </body>
 </html>
