@@ -24,7 +24,10 @@
 
     <section>
       <div id="newsDetail"></div>
-      <button id="save-article-btn">Save Article</button>
+      <div class="article-buttons">
+        <button id="save-article-btn">Save Article</button>
+        <button id="share-article-btn">Share Article</button>
+      </div>
       <button id="backButton">Back</button>
     </section>
 
@@ -53,9 +56,9 @@
         }
 
         document.getElementById("newsDetail").innerHTML = `
-        <h1 id="article-title">${selectedNews.title}</h1>
-        <p id="article-content">${selectedNews.news}</p>
-      `;
+          <h1 id="article-title">${selectedNews.title}</h1>
+          <p id="article-content">${selectedNews.news}</p>
+        `;
       }
 
       document.getElementById("backButton").addEventListener("click", () => {
@@ -84,6 +87,30 @@
 
       logoutBtn.addEventListener("click", async () => {
         await signOut(auth);
+      });
+
+      // Share Article Button Functionality
+      document.getElementById("share-article-btn").addEventListener("click", () => {
+        const selectedNews = JSON.parse(localStorage.getItem("selectedNews"));
+        if (!selectedNews) {
+          alert("No article to share.");
+          return;
+        }
+        // Use current page URL as the article link (or adjust if you have a dedicated URL)
+        const articleLink = window.location.href;
+        if (navigator.share) {
+          navigator.share({
+            title: selectedNews.title,
+            text: selectedNews.news,
+            url: articleLink,
+          })
+          .then(() => console.log("Article shared successfully"))
+          .catch((error) => console.error("Error sharing:", error));
+        } else {
+          navigator.clipboard.writeText(articleLink)
+            .then(() => alert("Article link copied to clipboard!"))
+            .catch((err) => console.error("Failed to copy link:", err));
+        }
       });
     </script>
   </body>

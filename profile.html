@@ -26,6 +26,7 @@
         <p><strong>Name:</strong> <span id="profile-name"></span></p>
         <p><strong>Email:</strong> <span id="profile-email"></span></p>
         <p><strong>UID:</strong> <span id="profile-uid"></span></p>
+        <button id="delete-account-btn">Delete All User Data</button>
       </div>
     </section>
 
@@ -35,40 +36,5 @@
         <a href="https://github.com/PranjalTrivedi" target="_blank">group 10</a>
       </p>
     </footer>
-
-    <script type="module">
-      import { auth } from "./firebase-config.js";
-      import {
-        onAuthStateChanged,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-      const loginBtn = document.getElementById("login-btn");
-      const logoutBtn = document.getElementById("logout-btn");
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          loginBtn.style.display = "none";
-          logoutBtn.style.display = "block";
-          document.getElementById("profile-name").textContent =
-            user.displayName || "N/A";
-          document.getElementById("profile-email").textContent =
-            user.email || "N/A";
-          document.getElementById("profile-uid").textContent =
-            user.uid || "N/A";
-        } else {
-          loginBtn.style.display = "block";
-          logoutBtn.style.display = "none";
-        }
-      });
-
-      loginBtn.addEventListener("click", () => {
-        window.location.href = "login.html";
-      });
-
-      logoutBtn.addEventListener("click", async () => {
-        await signOut(auth);
-      });
-    </script>
   </body>
 </html>

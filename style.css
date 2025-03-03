@@ -485,3 +485,20 @@ button:hover {
 #profile-details strong {
   color: #6200ea;
 }
+
+/* Delete All User Data Button */
+#delete-account-btn {
+  padding: 10px;
+  background-color: #ff3b30;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+#delete-account-btn:hover {
+  background-color: #d32f2f;
+}
