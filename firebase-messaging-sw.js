@@ -27,7 +27,7 @@ onBackgroundMessage(messaging, (payload) => {
 });
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' })
         .then((registration) => {
             console.log('Service Worker registered with scope:', registration.scope);
         })
