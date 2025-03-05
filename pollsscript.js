@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { get, getDatabase, onValue, push, ref, remove, update } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { getMessaging } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-messaging.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBTCAYvkaKFAsRdnQewEqd8gexgU-O89h0",
@@ -14,7 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const messaging = getMessaging(app);
+const messaging = getMessaging(app); 
 
 const translations = {
     en: {
