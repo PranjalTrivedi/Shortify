@@ -1,11 +1,27 @@
+import {
+  getAuth
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  increment,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { app } from "./firebase-config.js";
+
+// Initialize Firebase Auth and Firestore
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Load language-specific text
 function loadLanguage(language) {
   fetch(`src/locales/${language}.json`)
     .then((response) => response.json())
     .then((data) => {
       document.getElementById("welcome").innerText = data.welcome;
       document.getElementById("news").innerText = data.news;
-      document.getElementById("newsDescription").innerText =
-        data.newsDescription;
+      document.getElementById("newsDescription").innerText = data.newsDescription;
       document.getElementById("newsResults").innerText = data.newsResults;
       displayNews(data.newsResults);
     })
@@ -14,6 +30,7 @@ function loadLanguage(language) {
     });
 }
 
+// Display news articles
 function displayNews(news) {
   const newsResults = document.getElementById("newsResults");
   newsResults.innerHTML = "";
@@ -33,15 +50,18 @@ function displayNews(news) {
     `;
     newsResults.appendChild(newsItem);
 
-    newsItem.querySelector(".read-button").addEventListener("click", (e) => {
-      const newsIndex = e.target.getAttribute("data-index");
-      localStorage.setItem("selectedNews", JSON.stringify(newsData[newsIndex]));
-      markAsRead(userId);
-      window.location.href = "newsDetail.html";
+    newsItem.querySelector(".read-button").addEventListener("click", () => {
+      localStorage.setItem("selectedNews", JSON.stringify(newsData[index]));
+      onReadArticle();
+      setTimeout(() => {
+        window.location.href = "newsDetail.html";
+      }
+      , 3000);
     });
   });
 }
 
+// Sample news data
 const newsData = [
   {
     title: "Breaking News: AI Takes Over",
@@ -70,6 +90,7 @@ const newsData = [
   },
 ];
 
+// Display news on page load
 displayNews(newsData);
 
 document.getElementById("searchButton").addEventListener("click", () => {
@@ -93,71 +114,63 @@ document.getElementById("languageSelector").addEventListener("change", (e) => {
   loadLanguage(selectedLanguage);
 });
 
-async function getUserData() {
+// Function to increase read count for the user
+async function increaseReadCount() {
   try {
-    const response = await fetch("http://localhost:3000/users");
-    const text = await response.text();
-    console.log("Raw response:", text);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    const user = auth.currentUser;
+    // console.log("Current User:", user);
+    
+    if (!user) {
+      alert("User is not logged in!");
+      return;
     }
-    const data = JSON.parse(text);
-    console.log("User data:", data);
-    return data;
+
+    const userId = user.uid;
+    const userRef = doc(db, "users", userId);
+    
+
+    // Update the user's totalReadCount
+    await updateDoc(userRef, { totalReadCount: increment(1) });
+
+    // Confirm update
+    const updatedSnap = await getDoc(userRef);
+    console.log("Updated Data:", updatedSnap.data());
+
+    await updateBadge(userId);
   } catch (error) {
-    console.error("Error fetching user data:", error);
+    console.error("Error increasing read count:", error);
   }
 }
 
-getUserData();
+// Function to assign badges based on total read count
+async function updateBadge(userId) {
+  const userRef = doc(db, "users", userId);
+  const userSnap = await getDoc(userRef);
 
-async function saveUserData(userId, readCount, badge) {
-  const userData = { userId, readCount, badge };
-  try {
-    const response = await fetch("http://localhost:3000/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-    const data = await response.json();
-    console.log(data.message);
-  } catch (error) {
-    console.error("Error saving user data:", error);
+  if (!userSnap.exists()) {
+    console.error("User document does not exist!");
+    return;
   }
-}
 
-function updateBadge(userId, readCount) {
-  console.log("called updatyebadge");
+  const userData = userSnap.data();
+  const readCount = userData.totalReadCount || 0;
   let badge = "";
-  if (readCount >= 75) {
-    badge = "Platinum";
-  } else if (readCount >= 50) {
-    badge = "Gold";
-  } else if (readCount >= 15) {
-    badge = "Silver";
-  } else if (readCount >= 5) {
-    badge = "Bronze";
-  }
-  saveUserData(userId, readCount, badge);
-  const badgeElement = document.getElementById("badge");
-  if (badgeElement) {
-    badgeElement.innerText = `Badge: ${badge}`;
-  } else {
-    const badgeContainer = document.createElement("div");
-    badgeContainer.id = "badge";
-    badgeContainer.innerText = `Badge: ${badge}`;
-    document.body.appendChild(badgeContainer);
+
+  if (readCount >= 75) badge = "Platinum";
+  else if (readCount >= 50) badge = "Gold";
+  else if (readCount >= 15) badge = "Silver";
+  else if (readCount >= 5) badge = "Bronze";
+
+  if (badge && userData.badge !== badge) {
+    // Update the user's badge in the same document
+    await updateDoc(userRef, { badge });
+    alert(`Congrats! You've earned the '${badge}' badge!`);
   }
 }
 
-function markAsRead(userId) {
-  getUserData(userId).then((userData) => {
-    userData.readCount++;
-    updateBadge(userId, userData.readCount);
-  });
-}
+// Function to be called when a user reads an article
+async function onReadArticle() {
+  console.log("User read an article");
+  await increaseReadCount();
 
-const userId = "user456";
-getUserData(userId).then((userData) => updateBadge(userId, userData.readCount));
+}
