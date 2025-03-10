@@ -4,6 +4,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   collection,
+  deleteDoc,
+  deleteUser,
   doc,
   getDoc,
   getDocs,
@@ -179,6 +181,38 @@ async function displayUserDetails(userId) {
     console.log("No user details found!");
   }
 }
+
+// Delete all user data function
+deleteAccountBtn.addEventListener("click", async () => {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("No user logged in.");
+    return;
+  }
+
+  const userId = user.uid;
+  const userDocRef = doc(db, "users", userId);
+  const userArticlesRef = collection(db, "users", userId, "savedArticles");
+
+  try {
+    // Delete user's saved articles
+    const querySnapshot = await getDocs(userArticlesRef);
+    const deletePromises = querySnapshot.docs.map((docSnap) => deleteDoc(docSnap.ref));
+    await Promise.all(deletePromises);
+
+    // Delete user document
+    await deleteDoc(userDocRef);
+
+    // Delete Firebase authentication account
+    await deleteUser(user);
+
+    alert("All your data has been deleted.");
+    window.location.href = "index.html";
+  } catch (error) {
+    console.error("Error deleting user data:", error);
+    alert("Error deleting user data: " + error.message);
+  }});
+  
 
 // Call this function when the user reads an article
 async function onReadArticle(articleId) {
