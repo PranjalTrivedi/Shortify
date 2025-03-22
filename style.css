@@ -465,6 +465,30 @@ button:hover {
   color: #3700b3;
 }
 
+#history-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#history-list li {
+  background-color: #f4f4f9;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#history-list li a {
+  color: #6200ea;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+#history-list li a:hover {
+  color: #3700b3;
+}
+
 /* Profile Page Styles */
 #profile-details {
   background-color: white;

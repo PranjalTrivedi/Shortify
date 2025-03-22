@@ -10,7 +10,8 @@ import {
   getFirestore,
   increment,
   setDoc,
-  updateDoc
+  updateDoc,
+  Timestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { app } from "./firebase-config.js";
 
@@ -223,14 +224,31 @@ async function updateBadge(userId) {
   else if (readCount >= 5) badge = "Bronze";
 
   if (badge && userData.badge !== badge) {
-    // Update the user's badge in the same document
+    
     await updateDoc(userRef, { badge });
     alert(`Congrats! You've earned the '${badge}' badge!`);
   }
 }
 
-// Function to be called when a user reads an article
+
 async function onReadArticle() {
   console.log("User read an article");
   await increaseReadCount();
+
+  const user = auth.currentUser;
+  if (!user) {
+    alert("You need to log in to save articles to history.");
+    return;
+  }
+
+  const article = JSON.parse(localStorage.getItem("selectedNews"));
+  const articleRef = doc(db, "users", user.uid, "history", `${article.title}-${Date.now()}`); 
+
+  await setDoc(articleRef, {
+    title: article.title,
+    content: article.news,
+    url: article.title, 
+    readAt: Timestamp.now(), 
+  });
+  console.log("Article saved to history successfully!");
 }

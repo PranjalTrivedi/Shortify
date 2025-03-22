@@ -5,25 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Saved Articles</title>
     <script type="module" src="firebase-config.js"></script>
-    <script type="module" src="loadSavedArticles.js"></script>
+    <script type="module" src="history.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
-      <h1>Your Saved Articles</h1>
+      <h1>Your History</h1>
       <nav>
         <a href="index.html">Home</a>
         <a href="pollsdiscussions.html">Poll</a>
         <a href="savedArticles.html">Saved Articles</a>
         <a href="profile.html">Profile</a>
-        <a href="history.html"> History </a>
         <a href="bookmarkedArticles.html">Bookmarked Articles</a>
+        <a href="history.html"> History </a>
         <button id="login-btn">Login</button>
+
         <button id="logout-btn" style="display: none">Logout</button>
       </nav>
     </header>
 
-    <ul id="saved-articles-list"></ul>
+ 
+<ul id="history-list"></ul>
 
     <script type="module">
       import { auth } from "./firebase-config.js";
