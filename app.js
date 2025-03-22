@@ -2,10 +2,14 @@ import {
   getAuth
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
+  collection,
+  deleteDoc,
   doc,
   getDoc,
+  getDocs,
   getFirestore,
   increment,
+  setDoc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { app } from "./firebase-config.js";
@@ -30,8 +34,8 @@ function loadLanguage(language) {
     });
 }
 
-// Display news articles
-function displayNews(news) {
+// Function to display news articles
+async function displayNews(news) {
   const newsResults = document.getElementById("newsResults");
   newsResults.innerHTML = "";
 
@@ -40,25 +44,84 @@ function displayNews(news) {
     return;
   }
 
+  // Retrieve bookmarks from Firestore if the user is logged in
+  const user = auth.currentUser;
+  const bookmarks = user ? await getBookmarks(user.uid) : [];
+
   news.forEach((item, index) => {
     const newsItem = document.createElement("div");
     newsItem.className = "news-item";
+
+    // Check if the article is already bookmarked
+    const isBookmarked = bookmarks.some(bookmark => bookmark.articleId === item.title);
+
     newsItem.innerHTML = `
       <h3>${item.title}</h3>
       <p>${item.summary}</p>
       <button class="read-button" data-index="${index}">Read</button>
+      <button class="bookmark-button" data-index="${index}">
+        ${isBookmarked ? "🔖 Remove Bookmark" : "⭐ Bookmark"}
+      </button>
     `;
+
     newsResults.appendChild(newsItem);
 
+    // Handle Read button click
     newsItem.querySelector(".read-button").addEventListener("click", () => {
       localStorage.setItem("selectedNews", JSON.stringify(newsData[index]));
       onReadArticle();
       setTimeout(() => {
         window.location.href = "newsDetail.html";
-      }
-      , 3000);
+      }, 3000);
+    });
+
+    // Handle Bookmark button click
+    newsItem.querySelector(".bookmark-button").addEventListener("click", function () {
+      toggleBookmark(index, this);
     });
   });
+}
+
+// Function to toggle bookmarks in Firestore
+async function toggleBookmark(index, button) {
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("You need to log in to bookmark articles.");
+    return;
+  }
+
+  const userId = user.uid;
+  const article = newsData[index];
+  const bookmarkRef = doc(db, `users/${userId}/bookmarks`, article.title);
+
+  try {
+    const docSnap = await getDoc(bookmarkRef);
+
+    if (docSnap.exists()) {
+      // Remove bookmark
+      await deleteDoc(bookmarkRef);
+      button.textContent = "⭐ Bookmark";
+    } else {
+      // Add bookmark
+      await setDoc(bookmarkRef, {
+        articleId: article.title,
+        title: article.title,
+        summary: article.summary,
+        timestamp: new Date()
+      });
+      button.textContent = "🔖 Remove Bookmark";
+    }
+  } catch (error) {
+    console.error("Error updating bookmark:", error);
+  }
+}
+
+// Function to get user bookmarks from Firestore
+async function getBookmarks(userId) {
+  const bookmarksRef = collection(db, `users/${userId}/bookmarks`);
+  const querySnapshot = await getDocs(bookmarksRef);
+  return querySnapshot.docs.map(doc => doc.data());
 }
 
 // Sample news data
@@ -118,8 +181,7 @@ document.getElementById("languageSelector").addEventListener("change", (e) => {
 async function increaseReadCount() {
   try {
     const user = auth.currentUser;
-    // console.log("Current User:", user);
-    
+
     if (!user) {
       alert("User is not logged in!");
       return;
@@ -127,7 +189,6 @@ async function increaseReadCount() {
 
     const userId = user.uid;
     const userRef = doc(db, "users", userId);
-    
 
     // Update the user's totalReadCount
     await updateDoc(userRef, { totalReadCount: increment(1) });
@@ -172,5 +233,4 @@ async function updateBadge(userId) {
 async function onReadArticle() {
   console.log("User read an article");
   await increaseReadCount();
-
 }
