@@ -4,9 +4,6 @@ import { auth } from "./firebase-config.js";
 const db = getFirestore();
 const bookmarkedArticlesList = document.getElementById("bookmarked-articles-list");
 
-/**
- * Function to load bookmarked articles with tags.
- */
 auth.onAuthStateChanged(async (user) => {
   if (user) {
     loadBookmarkedArticles(user.uid);
