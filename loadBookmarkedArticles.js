@@ -65,7 +65,7 @@ async function loadBookmarkedArticles(userId) {
       localStorage.setItem("selectedNewsTitle", newsTitle);
       localStorage.setItem("selectedNewsContent", newsContent);
 
-      window.location.href = "news.html";
+      window.location.href = "newsDetail.html";
     });
   });
 
