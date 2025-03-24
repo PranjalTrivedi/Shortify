@@ -321,6 +321,16 @@ button:hover {
   margin: 5px 0 0;
 }
 
+/* Filter Input for News */
+#newsFilter {
+  display: block;
+  margin: 20px auto 10px;
+  padding: 10px;
+  width: 300px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
 /* News Detail Page Styles */
 #newsDetail {
   background-color: white;
@@ -525,4 +535,22 @@ button:hover {
 
 #delete-account-btn:hover {
   background-color: #d32f2f;
+}
+
+/* Read & Bookmark Buttons (Optional, if you want them styled similarly) */
+.read-button,
+.bookmark-button {
+  background-color: #6200ea;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.read-button:hover,
+.bookmark-button:hover {
+  background-color: #3700b3;
 }

@@ -33,7 +33,7 @@
 
     <main>
       <!-- Section for selected news -->
-      <section id="selectedNewsSection" style="display: none;">
+      <section id="selectedNewsSection" style="display: none">
         <h2>News</h2>
         <div id="selectedNews"></div>
       </section>
@@ -44,6 +44,15 @@
         <p id="newsDescription">
           Stay updated with the latest news in short, easy-to-read summaries.
         </p>
+
+        <!-- Filter field to filter displayed articles -->
+        <input
+          type="text"
+          id="newsFilter"
+          placeholder="Filter news by keyword..."
+          onkeyup="filterNews()"
+        />
+
         <div id="newsResults"></div>
       </section>
     </main>
@@ -55,6 +64,7 @@
       </p>
     </footer>
 
+    <!-- Your existing scripts -->
     <script type="module" src="app.js"></script>
     <script type="module" src="firebase-messaging-sw.js"></script>
 
@@ -68,7 +78,9 @@
       const loginBtn = document.getElementById("login-btn");
       const logoutBtn = document.getElementById("logout-btn");
       const selectedNewsDiv = document.getElementById("selectedNews");
-      const selectedNewsSection = document.getElementById("selectedNewsSection");
+      const selectedNewsSection = document.getElementById(
+        "selectedNewsSection"
+      );
       const generalNewsSection = document.getElementById("generalNewsSection");
 
       // Handle authentication state
@@ -91,7 +103,7 @@
         window.location.href = "login.html";
       });
 
-      // Display only the selected news
+      // Display only the selected news if stored in localStorage
       document.addEventListener("DOMContentLoaded", () => {
         const selectedNewsUrl = localStorage.getItem("selectedNewsUrl");
         const selectedNewsTitle = localStorage.getItem("selectedNewsTitle");
