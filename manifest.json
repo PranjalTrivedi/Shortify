@@ -1,0 +1,36 @@
+{
+    "name": "Shortify",
+    "short_name": "Shortify",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "description": "Stay updated with the latest news in short, easy-to-read summaries.",
+    "icons": [
+      {
+        "src": "./assets/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "./assets/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "./assets/screenshot-mobile.png",
+        "sizes": "1290x2796",
+        "type": "image/png"
+      },
+      {
+        "src": "./assets/screenshot-wide.png",
+        "sizes": "2914x1620",
+        "type": "image/png",
+        "form_factor": "wide"
+      }
+    ]
+  }
+  
