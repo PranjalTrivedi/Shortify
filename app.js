@@ -10,7 +10,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   collection,
   deleteDoc,
@@ -29,44 +29,115 @@ import { app } from "./firebase-config.js";
 export const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Sample news data (replace or expand as needed)
+
 const newsData = [
   {
     title: "Breaking News: AI Takes Over",
     summary: "AI is now dominating the tech industry.",
     news: "AI technology is advancing rapidly, taking over industries from healthcare to finance...",
+    category: "technology"
   },
   {
     title: "Climate Change Summit",
     summary: "World leaders gather to discuss climate change.",
     news: "World leaders have come together to discuss climate change at the annual summit...",
+    category: "science"
   },
   {
     title: "New Smartphone Released",
     summary: "The latest smartphone with advanced features is now available.",
     news: "The new smartphone boasts cutting-edge technology, including a foldable screen...",
+    category: "technology"
   },
+  {
+    title: "Stock Market Hits Record High",
+    summary: "Major indices reach all-time highs.",
+    news: "The stock market surged today as investors reacted positively to economic data...",
+    category: "business"
+  },
+  {
+    title: "New Cancer Treatment Breakthrough",
+    summary: "Researchers announce promising results.",
+    news: "A new treatment approach shows 80% success rate in early trials...",
+    category: "health"
+  },
+  {
+    title: "Oscar Nominations Announced",
+    summary: "See the full list of nominees.",
+    news: "The Academy has revealed this year's Oscar nominations with several surprises...",
+    category: "entertainment"
+  },
+  {
+    title: "World Cup Finals Set",
+    summary: "Top teams advance to championship.",
+    news: "After intense semifinal matches, the stage is set for an exciting final...",
+    category: "sports"
+  }
 ];
 
-// Display news articles in #newsResults
+// Get user's news preferences from Firestore
+async function getNewsPreferences(userId) {
+  try {
+    console.log("Fetching preferences for user:", userId);
+    const prefsRef = doc(db, "users", userId, "preferences", "news");
+    const prefsSnap = await getDoc(prefsRef);
+    
+    if (prefsSnap.exists()) {
+      const prefsData = prefsSnap.data();
+      console.log("Retrieved preferences:", prefsData);
+      return prefsData;
+    } else {
+      console.log("No preferences found for user");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting preferences:", error);
+    return null;
+  }
+}
+
+// Filter news based on user preferences
+function filterNewsByPreferences(news, preferences) {
+  console.log("Current preferences:", preferences);
+  
+  if (!preferences) {
+    console.log("No preferences - showing all news");
+    return news;
+  }
+
+  const filteredNews = news.filter(item => {
+    const category = item.category;
+    const shouldShow = preferences[category] === true;
+    console.log(`Checking ${item.title} (${category}): ${shouldShow ? 'SHOW' : 'HIDE'}`);
+    return shouldShow;
+  });
+
+  console.log("Filtered news count:", filteredNews.length);
+  return filteredNews;
+}
+
 export async function displayNews(news) {
   const newsResults = document.getElementById("newsResults");
   newsResults.innerHTML = "";
 
-  if (news.length === 0) {
-    newsResults.innerHTML = "<p>No news found.</p>";
+
+  const user = auth.currentUser;
+  const preferences = user ? await getNewsPreferences(user.uid) : null;
+
+  const filteredNews = filterNewsByPreferences(news, preferences);
+
+  if (filteredNews.length === 0) {
+    newsResults.innerHTML = "<p>No news found matching your preferences.</p>";
     return;
   }
 
-  // Retrieve bookmarks from Firestore if the user is logged in
-  const user = auth.currentUser;
   const bookmarks = user ? await getBookmarks(user.uid) : [];
 
   news.forEach((item, index) => {
     const newsItem = document.createElement("div");
-    newsItem.className = "news-item"; // crucial for filtering
+    newsItem.className = "news-item"; 
 
-    // Check if the article is bookmarked
+
     const isBookmarked = bookmarks.some(
       (bookmark) => bookmark.articleId === item.title
     );
@@ -86,13 +157,13 @@ export async function displayNews(news) {
     newsItem.querySelector(".read-button").addEventListener("click", () => {
       localStorage.setItem("selectedNews", JSON.stringify(newsData[index]));
       onReadArticle(index);
-      // redirect to a detail page if needed:
+  
       setTimeout(() => {
         window.location.href = "newsDetail.html";
       }, 3000);
     });
 
-    // Handle "Bookmark" button click
+
     newsItem
       .querySelector(".bookmark-button")
       .addEventListener("click", function () {
@@ -118,7 +189,7 @@ async function toggleBookmark(index, button) {
     const docSnap = await getDoc(bookmarkRef);
 
     if (docSnap.exists()) {
-      // Remove bookmark
+
       await deleteDoc(bookmarkRef);
       button.textContent = "⭐ Bookmark";
     } else {
@@ -172,7 +243,6 @@ async function onReadArticle(index) {
   console.log("Article saved to history successfully!");
 }
 
-// Increase user's totalReadCount and check badges
 async function increaseReadCount() {
   try {
     const user = auth.currentUser;
@@ -222,7 +292,6 @@ async function updateBadge(userId) {
   }
 }
 
-// Filter function triggered by onkeyup in index.html
 function filterNews() {
   const filterInput = document.getElementById("newsFilter").value.toLowerCase();
   const newsItems = document.querySelectorAll(".news-item");
@@ -239,13 +308,45 @@ function filterNews() {
   });
 }
 
-// Make filterNews accessible to index.html's onkeyup attribute
 window.filterNews = filterNews;
 
-// Display initial news on page load
-displayNews(newsData);
+// Load and display news on page load
+async function loadAndDisplayNews() {
+  try {
+    const user = auth.currentUser;
+    const preferences = user ? await getNewsPreferences(user.uid) : null;
+    
+    // Filter sample news based on preferences
+    const filteredNews = newsData.filter(article => {
+      if (!preferences) return true; // Show all if no preferences
+      return preferences[article.category] !== false; 
+    });
 
-// Search button functionality (optional)
+    displayNews(filteredNews);
+  } catch (error) {
+    console.error('Error loading news:', error);
+    // Fall back to all sample data if error occurs
+    displayNews(newsData);
+  }
+}
+
+// Handle authentication state
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    console.log('User authenticated:', user.uid);
+    try {
+      await loadAndDisplayNews();
+    } catch (error) {
+      console.error('Error loading news:', error);
+      displayNews(newsData);
+    }
+  } else {
+    console.log('User not authenticated - redirecting to login');
+    window.location.href = 'login.html';
+  }
+});
+
+
 document.getElementById("searchButton").addEventListener("click", () => {
   const searchTerm = document.getElementById("searchInput").value.toLowerCase();
   const filteredNews = newsData.filter(
@@ -263,7 +364,7 @@ document.getElementById("searchInput").addEventListener("keypress", (e) => {
   }
 });
 
-// Handle language selection
+
 document.getElementById("languageSelector").addEventListener("change", (e) => {
   const selectedLanguage = e.target.value;
   loadLanguage(selectedLanguage);

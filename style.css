@@ -520,6 +520,78 @@ button:hover {
   color: #6200ea;
 }
 
+/* News Preferences Section */
+.preferences-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.preferences-section h3 {
+  color: #6200ea;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.preference-option {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.preference-option input[type="checkbox"] {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  accent-color: #6200ea;
+}
+
+.preference-option label {
+  font-size: 1.1rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#save-preferences-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#save-preferences-btn:hover {
+  background-color: #218838;
+}
+
+#cancel-preferences-btn {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#cancel-preferences-btn:hover {
+  background-color: #5a6268;
+}
+
 /* Delete All User Data Button */
 #delete-account-btn {
   padding: 10px;

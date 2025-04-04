@@ -11,7 +11,12 @@
     <title>Profile</title>
     <link rel="stylesheet" href="style.css" />
     <script type="module" src="firebase-config.js"></script>
-    <script type="module" src="profile.js"></script>
+    <script type="module">
+      console.log("Profile page loaded, loading profile.js...");
+      import('./profile.js')
+        .then(() => console.log("profile.js loaded successfully"))
+        .catch(err => console.error("Error loading profile.js:", err));
+    </script>
   </head>
   <body>
     <header>
@@ -36,6 +41,40 @@
         <p><strong>Badge:</strong><span id="profile-badge"></span></p>
         <button id="delete-account-btn">Delete All User Data</button>
       </div>
+
+      <div id="news-preferences" class="preferences-section">
+        <h3>News Preferences</h3>
+        <form id="preferences-form">
+          <div class="preference-option">
+            <input type="checkbox" id="pref-technology" name="technology" checked>
+            <label for="pref-technology">Technology</label>
+          </div>
+          <div class="preference-option">
+            <input type="checkbox" id="pref-science" name="science" checked>
+            <label for="pref-science">Science</label>
+          </div>
+          <div class="preference-option">
+            <input type="checkbox" id="pref-business" name="business" checked>
+            <label for="pref-business">Business</label>
+          </div>
+          <div class="preference-option">
+            <input type="checkbox" id="pref-health" name="health" checked>
+            <label for="pref-health">Health</label>
+          </div>
+          <div class="preference-option">
+            <input type="checkbox" id="pref-entertainment" name="entertainment" checked>
+            <label for="pref-entertainment">Entertainment</label>
+          </div>
+          <div class="preference-option">
+            <input type="checkbox" id="pref-sports" name="sports" checked>
+            <label for="pref-sports">Sports</label>
+          </div>
+          <div class="buttons">
+            <button type="button" id="save-preferences-btn">Save Preferences</button>
+            <button type="button" id="cancel-preferences-btn">Cancel</button>
+          </div>
+        </form>
+      </div>
     </section>
 
     <footer>
@@ -45,23 +84,22 @@
       </p>
     </footer>
     <script>
-      // Hide loader when page is fully loaded
+      
       window.addEventListener('load', () => {
         const loader = document.querySelector('.loader-wrapper');
         setTimeout(() => {
           loader.classList.add('loader-fade-out');
-          setTimeout(() => loader.remove(), 500); // Remove after fade-out
-        }, 1000); // Minimum show time (1 second)
+          setTimeout(() => loader.remove(), 500); 
+        }, 1000);
       });
-    
-      // Optional: Hide loader if page takes too long to load
+
       setTimeout(() => {
         const loader = document.querySelector('.loader-wrapper');
         if (loader) {
           loader.classList.add('loader-fade-out');
           setTimeout(() => loader.remove(), 500);
         }
-      }, 5000); // Force hide after 5 seconds
+      }, 5000); 
     </script>
   </body>
 </html>

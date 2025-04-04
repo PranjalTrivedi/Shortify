@@ -9,7 +9,6 @@
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
-    <!-- Add this loader div as the first element -->
   <div class="loader-wrapper">
     <div class="loader"></div>
     <div class="loader-text">Loading Shortify...</div>
@@ -39,20 +38,19 @@
     </nav>
 
     <main>
-      <!-- Section for selected news -->
+
       <section id="selectedNewsSection" style="display: none">
         <h2>News</h2>
         <div id="selectedNews"></div>
       </section>
 
-      <!-- General News Section (Hidden if selected news exists) -->
       <section id="generalNewsSection">
         <h2>Latest News</h2>
         <p id="newsDescription">
           Stay updated with the latest news in short, easy-to-read summaries.
         </p>
 
-        <!-- Filter field to filter displayed articles -->
+
         <input
           type="text"
           id="newsFilter"
@@ -71,67 +69,22 @@
       </p>
     </footer>
 
-    <!-- Your existing scripts -->
-    <script type="module" src="app.js"></script>
-    <script type="module" src="firebase-messaging-sw.js"></script>
 
-    <script type="module">
-      import { auth } from "./firebase-config.js";
-      import {
-        onAuthStateChanged,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-      const loginBtn = document.getElementById("login-btn");
-      const logoutBtn = document.getElementById("logout-btn");
-      const selectedNewsDiv = document.getElementById("selectedNews");
-      const selectedNewsSection = document.getElementById(
-        "selectedNewsSection"
-      );
-      const generalNewsSection = document.getElementById("generalNewsSection");
-
-      // Handle authentication state
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          loginBtn.style.display = "none";
-          logoutBtn.style.display = "block";
-        } else {
-          loginBtn.style.display = "block";
-          logoutBtn.style.display = "none";
-        }
-      });
-
-      loginBtn.addEventListener("click", () => {
-        window.location.href = "login.html";
-      });
-
-      logoutBtn.addEventListener("click", async () => {
-        await signOut(auth);
-        window.location.href = "login.html";
-      });
-
-      // Display only the selected news if stored in localStorage
-      document.addEventListener("DOMContentLoaded", () => {
-        const selectedNewsUrl = localStorage.getItem("selectedNewsUrl");
-        const selectedNewsTitle = localStorage.getItem("selectedNewsTitle");
-        const selectedNewsContent = localStorage.getItem("selectedNewsContent");
-
-        if (selectedNewsUrl && selectedNewsTitle && selectedNewsContent) {
-          selectedNewsDiv.innerHTML = `
-            <h3>${selectedNewsTitle}</h3>
-            <p>${selectedNewsContent}</p>
-            <a href="${selectedNewsUrl}" target="_blank">Read Full Article</a>
-          `;
-          selectedNewsSection.style.display = "block";
-          generalNewsSection.style.display = "none"; // Hide general news
-
-          // Clear localStorage after displaying the news.
-          localStorage.removeItem("selectedNewsUrl");
-          localStorage.removeItem("selectedNewsTitle");
-          localStorage.removeItem("selectedNewsContent");
-        }
-      });
-    </script>
+  <script type="module">
+    import { auth } from './app.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('User logged in:', user.uid);
+        import('./app.js');
+      } else {
+        console.log('No user logged in - redirecting to login');
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+    
 
 <script>
   // Hide loader when page is fully loaded
@@ -139,18 +92,17 @@
     const loader = document.querySelector('.loader-wrapper');
     setTimeout(() => {
       loader.classList.add('loader-fade-out');
-      setTimeout(() => loader.remove(), 500); // Remove after fade-out
-    }, 1000); // Minimum show time (1 second)
+      setTimeout(() => loader.remove(), 500); 
+    }, 1000); 
   });
 
-  // Optional: Hide loader if page takes too long to load
   setTimeout(() => {
     const loader = document.querySelector('.loader-wrapper');
     if (loader) {
       loader.classList.add('loader-fade-out');
       setTimeout(() => loader.remove(), 500);
     }
-  }, 5000); // Force hide after 5 seconds
+  }, 5000); 
 </script>
   </body>
 </html>

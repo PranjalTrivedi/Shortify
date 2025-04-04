@@ -13,7 +13,49 @@ import {
   setDoc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// Default news preferences
+const DEFAULT_PREFERENCES = {
+  technology: true,
+  science: true,
+  business: true,
+  health: true,
+  entertainment: true,
+  sports: true
+};
+console.log("Profile.js script loading...");
 import { auth, db } from "./firebase-config.js";
+
+// Verify DOM elements exist
+console.log("Checking required DOM elements...");
+const requiredElements = [
+  'save-preferences-btn',
+  'cancel-preferences-btn',
+  'pref-technology',
+  'pref-science',
+  'pref-business', 
+  'pref-health',
+  'pref-entertainment',
+  'pref-sports'
+];
+
+requiredElements.forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) {
+    console.error(`Missing required element: #${id}`);
+  } else {
+    console.log(`Found element: #${id}`);
+  }
+});
+
+// Verify Firebase
+console.log("Checking Firebase initialization...");
+if (!db) {
+  console.error("Firestore not initialized");
+}
+if (!auth) {
+  console.error("Auth not initialized");
+}
 
 const logoutBtn = document.getElementById("logout-btn");
 const deleteAccountBtn = document.getElementById("delete-account-btn");
@@ -27,6 +69,9 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById("profile-email").textContent = user.email || "N/A";
     document.getElementById("profile-uid").textContent = user.uid || "N/A";
     document.getElementById("profile-badge").textContent = user.badge || "N/A";
+
+    // Load user preferences
+    await loadPreferences(user.uid);
 
     await ensureUserExists(user.uid, user.email, user.displayName);
     await displayUserDetails(user.uid);
@@ -100,7 +145,6 @@ async function displayUserDetails(userId) {
     const userData = userSnap.data();
     document.getElementById("profile-name").textContent = userData.displayName || "N/A";
     document.getElementById("profile-email").textContent = userData.email || "N/A";
-    // document.getElementById("total-read-count").textContent = `Total Read Count: ${userData.totalReadCount || 0}`;
   } else {
     console.log("User details not found in Firestore!");
   }
@@ -181,6 +225,126 @@ async function displayUserBadges(userId) {
   } else {
     console.log("User data not found in Firestore!");
     document.getElementById("profile-badge").innerText = "No badges earned";
+  }
+}
+
+// Save user preferences to Firestore
+async function savePreferences(userId) {
+  try {
+    if (!userId) {
+      throw new Error("No user ID - user must be logged in");
+    }
+
+    console.log("Current auth state:", auth.currentUser);
+    
+    const prefsRef = doc(db, "users", userId, "preferences", "news");
+    console.log("Firestore reference path:", prefsRef.path);
+    
+    const preferences = {
+      technology: document.getElementById("pref-technology").checked,
+      science: document.getElementById("pref-science").checked,
+      business: document.getElementById("pref-business").checked,
+      health: document.getElementById("pref-health").checked,
+      entertainment: document.getElementById("pref-entertainment").checked,
+      sports: document.getElementById("pref-sports").checked,
+      lastUpdated: new Date()
+    };
+    console.log("Preferences to save:", preferences);
+
+    // Verify Firestore connection
+    const testDoc = doc(db, "users", userId);
+    const testSnap = await getDoc(testDoc);
+    if (!testSnap.exists()) {
+      throw new Error("User document doesn't exist in Firestore");
+    }
+
+    // Save preferences
+    await setDoc(prefsRef, preferences, { merge: true });
+    console.log("Preferences saved to Firestore");
+
+    // Immediate verification
+    const savedPrefs = await getDoc(prefsRef);
+    if (!savedPrefs.exists()) {
+      throw new Error("Failed to verify saved preferences");
+    }
+
+    console.log("Verified saved preferences:", savedPrefs.data());
+    alert("Preferences saved successfully!");
+    
+    // Update UI
+    loadPreferences(userId);
+    
+  } catch (error) {
+    console.error("SAVE PREFERENCES ERROR:", error);
+    console.trace();
+    alert(`Failed to save preferences: ${error.message}\nCheck console for details`);
+  }
+}
+
+// Load user preferences from Firestore
+async function loadPreferences(userId) {
+  try {
+    if (!userId) {
+      console.warn("No user ID - loading default preferences");
+      throw new Error("User not authenticated");
+    }
+
+    console.log("Current auth state:", auth.currentUser);
+    const prefsRef = doc(db, "users", userId, "preferences", "news");
+    console.log("Loading preferences from:", prefsRef.path);
+
+    // Verify Firestore connection
+    const testDoc = doc(db, "users", userId);
+    const testSnap = await getDoc(testDoc);
+    if (!testSnap.exists()) {
+      throw new Error("User document doesn't exist in Firestore");
+    }
+
+    const prefsSnap = await getDoc(prefsRef);
+    
+    if (prefsSnap.exists()) {
+      const preferences = prefsSnap.data();
+      console.log("Loaded preferences:", preferences);
+      
+      // Update UI
+      document.getElementById("pref-technology").checked = preferences.technology ?? DEFAULT_PREFERENCES.technology;
+      document.getElementById("pref-science").checked = preferences.science ?? DEFAULT_PREFERENCES.science;
+      document.getElementById("pref-business").checked = preferences.business ?? DEFAULT_PREFERENCES.business;
+      document.getElementById("pref-health").checked = preferences.health ?? DEFAULT_PREFERENCES.health;
+      document.getElementById("pref-entertainment").checked = preferences.entertainment ?? DEFAULT_PREFERENCES.entertainment;
+      document.getElementById("pref-sports").checked = preferences.sports ?? DEFAULT_PREFERENCES.sports;
+    } else {
+      console.log("No preferences found - using defaults");
+      Object.entries(DEFAULT_PREFERENCES).forEach(([key, value]) => {
+        document.getElementById(`pref-${key}`).checked = value;
+      });
+    }
+
+    // Setup event listeners
+    console.log("Setting up event listeners...");
+    const saveBtn = document.getElementById("save-preferences-btn");
+    const cancelBtn = document.getElementById("cancel-preferences-btn");
+    
+    if (!saveBtn || !cancelBtn) {
+      throw new Error("Could not find preference buttons in DOM");
+    }
+
+    saveBtn.onclick = () => {
+      console.log("Save button clicked");
+      savePreferences(userId);
+    };
+    cancelBtn.onclick = () => {
+      console.log("Cancel button clicked"); 
+      loadPreferences(userId);
+    };
+    
+  } catch (error) {
+    console.error("LOAD PREFERENCES ERROR:", error);
+    console.trace();
+    console.log("Falling back to default preferences");
+    Object.entries(DEFAULT_PREFERENCES).forEach(([key, value]) => {
+      document.getElementById(`pref-${key}`).checked = value;
+    });
   }
 }
 
