@@ -2,10 +2,10 @@
 <html lang="en">
   <head>
     <!-- Add this loader div as the first element -->
-  <div class="loader-wrapper">
-    <div class="loader"></div>
-    <div class="loader-text">Loading Shortify...</div>
-  </div>
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+      <div class="loader-text">Loading Shortify...</div>
+    </div>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile</title>
@@ -13,17 +13,23 @@
     <script type="module" src="firebase-config.js"></script>
     <script type="module">
       console.log("Profile page loaded, loading profile.js...");
-      import('./profile.js')
+      import("./profile.js")
         .then(() => console.log("profile.js loaded successfully"))
-        .catch(err => console.error("Error loading profile.js:", err));
+        .catch((err) => console.error("Error loading profile.js:", err));
     </script>
   </head>
   <body>
     <header>
       <h1>Profile</h1>
       <nav>
-      <button id="darkModeToggle" class="dark-mode-toggle" title="Toggle Dark Mode">🌓</button>
-      <a href="index.html">Home</a>
+        <button
+          id="darkModeToggle"
+          class="dark-mode-toggle"
+          title="Toggle Dark Mode"
+        >
+          🌓
+        </button>
+        <a href="index.html">Home</a>
         <a href="pollsdiscussions.html">Poll</a>
         <a href="savedArticles.html">Saved Articles</a>
         <a href="profile.html">Profile</a>
@@ -47,31 +53,43 @@
         <h3>News Preferences</h3>
         <form id="preferences-form">
           <div class="preference-option">
-            <input type="checkbox" id="pref-technology" name="technology" checked>
+            <input
+              type="checkbox"
+              id="pref-technology"
+              name="technology"
+              checked
+            />
             <label for="pref-technology">Technology</label>
           </div>
           <div class="preference-option">
-            <input type="checkbox" id="pref-science" name="science" checked>
+            <input type="checkbox" id="pref-science" name="science" checked />
             <label for="pref-science">Science</label>
           </div>
           <div class="preference-option">
-            <input type="checkbox" id="pref-business" name="business" checked>
+            <input type="checkbox" id="pref-business" name="business" checked />
             <label for="pref-business">Business</label>
           </div>
           <div class="preference-option">
-            <input type="checkbox" id="pref-health" name="health" checked>
+            <input type="checkbox" id="pref-health" name="health" checked />
             <label for="pref-health">Health</label>
           </div>
           <div class="preference-option">
-            <input type="checkbox" id="pref-entertainment" name="entertainment" checked>
+            <input
+              type="checkbox"
+              id="pref-entertainment"
+              name="entertainment"
+              checked
+            />
             <label for="pref-entertainment">Entertainment</label>
           </div>
           <div class="preference-option">
-            <input type="checkbox" id="pref-sports" name="sports" checked>
+            <input type="checkbox" id="pref-sports" name="sports" checked />
             <label for="pref-sports">Sports</label>
           </div>
           <div class="buttons">
-            <button type="button" id="save-preferences-btn">Save Preferences</button>
+            <button type="button" id="save-preferences-btn">
+              Save Preferences
+            </button>
             <button type="button" id="cancel-preferences-btn">Cancel</button>
           </div>
         </form>
@@ -84,28 +102,63 @@
         <a href="https://github.com/PranjalTrivedi" target="_blank">group 10</a>
       </p>
     </footer>
-    <script>
-      
-      window.addEventListener('load', () => {
-        const loader = document.querySelector('.loader-wrapper');
-        setTimeout(() => {
-          loader.classList.add('loader-fade-out');
-          setTimeout(() => loader.remove(), 500); 
-        }, 1000);
+    <script type="module">
+      import { auth } from "./firebase-config.js";
+      import {
+        onAuthStateChanged,
+        signInWithPopup,
+        GoogleAuthProvider,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const loginBtn = document.getElementById("login-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "block";
+        } else {
+          loginBtn.style.display = "block";
+          logoutBtn.style.display = "none";
+        }
       });
 
+      loginBtn.addEventListener("click", async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+          await signInWithPopup(auth, provider);
+        } catch (error) {
+          console.error("Login failed:", error);
+        }
+      });
+
+      logoutBtn.addEventListener("click", async () => {
+        await signOut(auth);
+      });
+    </script>
+    <script>
+      // Hide loader when page is fully loaded
+      window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader-wrapper");
+        setTimeout(() => {
+          loader.classList.add("loader-fade-out");
+          setTimeout(() => loader.remove(), 500); // Remove after fade-out
+        }, 1000); // Minimum show time (1 second)
+      });
+
+      // Optional: Hide loader if page takes too long to load
       setTimeout(() => {
-        const loader = document.querySelector('.loader-wrapper');
+        const loader = document.querySelector(".loader-wrapper");
         if (loader) {
-          loader.classList.add('loader-fade-out');
+          loader.classList.add("loader-fade-out");
           setTimeout(() => loader.remove(), 500);
         }
-      }, 5000); 
+      }, 5000); // Force hide after 5 seconds
     </script>
     <script type="module">
-      import { initDarkModeToggle } from './darkmode.js';
-      document.addEventListener('DOMContentLoaded', initDarkModeToggle);
+      import { initDarkModeToggle } from "./darkmode.js";
+      document.addEventListener("DOMContentLoaded", initDarkModeToggle);
     </script>
-    
   </body>
 </html>

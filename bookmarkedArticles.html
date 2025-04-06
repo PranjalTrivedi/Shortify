@@ -10,13 +10,20 @@
   </head>
   <body>
     <!-- Add this loader div as the first element -->
-  <div class="loader-wrapper">
-    <div class="loader"></div>
-    <div class="loader-text">Loading Shortify...</div>
-  </div>
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+      <div class="loader-text">Loading Shortify...</div>
+    </div>
     <header>
       <h1>Your Bookmarked Articles</h1>
       <nav>
+        <button
+          id="darkModeToggle"
+          class="dark-mode-toggle"
+          title="Toggle Dark Mode"
+        >
+          🌓
+        </button>
         <a href="index.html">Home</a>
         <a href="pollsdiscussions.html">Poll</a>
         <a href="savedArticles.html">Saved Articles</a>
@@ -32,18 +39,28 @@
     <ul id="bookmarked-articles-list"></ul>
 
     <script type="module">
-      import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        doc,
+        updateDoc,
+        deleteDoc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
       import { auth } from "./firebase-config.js";
 
       const db = getFirestore();
-      const bookmarkedArticlesList = document.getElementById("bookmarked-articles-list");
+      const bookmarkedArticlesList = document.getElementById(
+        "bookmarked-articles-list"
+      );
       const tagFilter = document.getElementById("tagFilter");
 
       auth.onAuthStateChanged(async (user) => {
         if (user) {
           loadBookmarkedArticles(user.uid);
         } else {
-          bookmarkedArticlesList.innerHTML = "<p>Please log in to see your bookmarks.</p>";
+          bookmarkedArticlesList.innerHTML =
+            "<p>Please log in to see your bookmarks.</p>";
         }
       });
 
@@ -52,7 +69,8 @@
         const querySnapshot = await getDocs(bookmarksRef);
 
         if (querySnapshot.empty) {
-          bookmarkedArticlesList.innerHTML = "<p>No bookmarked articles yet.</p>";
+          bookmarkedArticlesList.innerHTML =
+            "<p>No bookmarked articles yet.</p>";
           return;
         }
 
@@ -66,7 +84,7 @@
 
           // Collect unique tags for filtering
           if (data.tags) {
-            data.tags.forEach(tag => tagsSet.add(tag));
+            data.tags.forEach((tag) => tagsSet.add(tag));
           }
 
           html += `
@@ -86,7 +104,7 @@
 
         // Populate tag filter dropdown
         tagFilter.innerHTML = `<option value="">Filter by Tag</option>`;
-        tagsSet.forEach(tag => {
+        tagsSet.forEach((tag) => {
           tagFilter.innerHTML += `<option value="${tag}">${tag}</option>`;
         });
 
@@ -110,7 +128,9 @@
         document.querySelectorAll(".remove-bookmark").forEach((button) => {
           button.addEventListener("click", async (event) => {
             const articleId = event.target.getAttribute("data-id");
-            await deleteDoc(doc(db, `users/${auth.currentUser.uid}/bookmarks`, articleId));
+            await deleteDoc(
+              doc(db, `users/${auth.currentUser.uid}/bookmarks`, articleId)
+            );
             event.target.parentElement.remove();
           });
         });
@@ -123,8 +143,14 @@
             const tagValue = tagInput.value.trim();
 
             if (tagValue) {
-              const articleRef = doc(db, `users/${auth.currentUser.uid}/bookmarks`, articleId);
-              const articleSnap = await getDocs(collection(db, `users/${auth.currentUser.uid}/bookmarks`));
+              const articleRef = doc(
+                db,
+                `users/${auth.currentUser.uid}/bookmarks`,
+                articleId
+              );
+              const articleSnap = await getDocs(
+                collection(db, `users/${auth.currentUser.uid}/bookmarks`)
+              );
 
               let existingTags = [];
               articleSnap.forEach((doc) => {
@@ -138,7 +164,8 @@
                 await updateDoc(articleRef, { tags: existingTags });
 
                 // Update the UI
-                document.getElementById(`tags-${articleId}`).innerText = existingTags.join(", ");
+                document.getElementById(`tags-${articleId}`).innerText =
+                  existingTags.join(", ");
                 tagInput.value = "";
               }
             }
@@ -161,27 +188,26 @@
     </script>
     <script>
       // Hide loader when page is fully loaded
-      window.addEventListener('load', () => {
-        const loader = document.querySelector('.loader-wrapper');
+      window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader-wrapper");
         setTimeout(() => {
-          loader.classList.add('loader-fade-out');
+          loader.classList.add("loader-fade-out");
           setTimeout(() => loader.remove(), 500); // Remove after fade-out
         }, 1000); // Minimum show time (1 second)
       });
-    
+
       // Optional: Hide loader if page takes too long to load
       setTimeout(() => {
-        const loader = document.querySelector('.loader-wrapper');
+        const loader = document.querySelector(".loader-wrapper");
         if (loader) {
-          loader.classList.add('loader-fade-out');
+          loader.classList.add("loader-fade-out");
           setTimeout(() => loader.remove(), 500);
         }
       }, 5000); // Force hide after 5 seconds
     </script>
     <script type="module">
-      import { initDarkModeToggle } from './darkmode.js';
-      document.addEventListener('DOMContentLoaded', initDarkModeToggle);
+      import { initDarkModeToggle } from "./darkmode.js";
+      document.addEventListener("DOMContentLoaded", initDarkModeToggle);
     </script>
-    
   </body>
 </html>

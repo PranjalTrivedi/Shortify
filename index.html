@@ -9,10 +9,10 @@
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
-  <div class="loader-wrapper">
-    <div class="loader"></div>
-    <div class="loader-text">Loading Shortify...</div>
-  </div>
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+      <div class="loader-text">Loading Shortify...</div>
+    </div>
     <header>
       <h1 id="welcome">Welcome to Shortify</h1>
       <div class="search-container">
@@ -27,7 +27,13 @@
     </header>
 
     <nav>
-    <button id="darkModeToggle" class="dark-mode-toggle" title="Toggle Dark Mode">🌓</button>
+      <button
+        id="darkModeToggle"
+        class="dark-mode-toggle"
+        title="Toggle Dark Mode"
+      >
+        🌓
+      </button>
       <a href="index.html">Home</a>
       <a href="pollsdiscussions.html">Poll</a>
       <a href="savedArticles.html">Saved Articles</a>
@@ -39,7 +45,6 @@
     </nav>
 
     <main>
-
       <section id="selectedNewsSection" style="display: none">
         <h2>News</h2>
         <div id="selectedNews"></div>
@@ -50,7 +55,6 @@
         <p id="newsDescription">
           Stay updated with the latest news in short, easy-to-read summaries.
         </p>
-
 
         <input
           type="text"
@@ -70,40 +74,60 @@
       </p>
     </footer>
 
+    <script type="module">
+      import { auth } from "./app.js";
+      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  <script type="module">
-    import { auth } from './app.js';
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log('User logged in:', user.uid);
-        import('./app.js');
-      } else {
-        console.log('No user logged in - redirecting to login');
-        window.location.href = 'login.html';
-      }
-    });
-  </script>
-    
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log("User logged in:", user.uid);
+          import("./app.js");
+        } else {
+          console.log("No user logged in - redirecting to login");
+          window.location.href = "login.html";
+        }
+      });
 
-<script>
-  // Hide loader when page is fully loaded
-  window.addEventListener('load', () => {
-    const loader = document.querySelector('.loader-wrapper');
-    setTimeout(() => {
-      loader.classList.add('loader-fade-out');
-      setTimeout(() => loader.remove(), 500); 
-    }, 1000); 
-  });
+      // Authentication Handling
+      const loginBtn = document.getElementById("login-btn");
+      const logoutBtn = document.getElementById("logout-btn");
 
-  setTimeout(() => {
-    const loader = document.querySelector('.loader-wrapper');
-    if (loader) {
-      loader.classList.add('loader-fade-out');
-      setTimeout(() => loader.remove(), 500);
-    }
-  }, 5000); 
-</script>
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "block";
+        } else {
+          loginBtn.style.display = "block";
+          logoutBtn.style.display = "none";
+        }
+      });
+
+      loginBtn.addEventListener("click", () => {
+        window.location.href = "login.html";
+      });
+
+      logoutBtn.addEventListener("click", async () => {
+        await signOut(auth);
+      });
+    </script>
+
+    <script>
+      // Hide loader when page is fully loaded
+      window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader-wrapper");
+        setTimeout(() => {
+          loader.classList.add("loader-fade-out");
+          setTimeout(() => loader.remove(), 500);
+        }, 1000);
+      });
+
+      setTimeout(() => {
+        const loader = document.querySelector(".loader-wrapper");
+        if (loader) {
+          loader.classList.add("loader-fade-out");
+          setTimeout(() => loader.remove(), 500);
+        }
+      }, 5000);
+    </script>
   </body>
 </html>
