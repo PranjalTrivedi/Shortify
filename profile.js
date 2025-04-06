@@ -13,6 +13,7 @@ import {
   setDoc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { auth, db } from "./firebase-config.js";
 
 // Default news preferences
 const DEFAULT_PREFERENCES = {
@@ -24,7 +25,6 @@ const DEFAULT_PREFERENCES = {
   sports: true
 };
 console.log("Profile.js script loading...");
-import { auth, db } from "./firebase-config.js";
 
 // Verify DOM elements exist
 console.log("Checking required DOM elements...");
@@ -137,18 +137,24 @@ async function ensureUserExists(userId, email, displayName) {
   }
 }
 
-async function displayUserDetails(userId) {
-  const userRef = doc(db, "users", userId);
-  const userSnap = await getDoc(userRef);
-
-  if (userSnap.exists()) {
-    const userData = userSnap.data();
-    document.getElementById("profile-name").textContent = userData.displayName || "N/A";
-    document.getElementById("profile-email").textContent = userData.email || "N/A";
-  } else {
-    console.log("User details not found in Firestore!");
+  async function displayUserDetails(userId) {
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+  
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      
+      const displayName = userData.displayName || auth.currentUser?.displayName || "N/A";
+      const email = userData.email || auth.currentUser?.email || "N/A";
+  
+      document.getElementById("profile-name").textContent = displayName;
+      document.getElementById("profile-email").textContent = email;
+    } else {
+      console.log("User details not found in Firestore!");
+      document.getElementById("profile-name").textContent = "N/A";
+      document.getElementById("profile-email").textContent = "N/A";
+    }
   }
-}
 
 async function increaseReadCount(articleId) {
   if (!auth.currentUser) {
