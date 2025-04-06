@@ -1,13 +1,13 @@
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('firebase-messaging-sw.js')
-        .then(registration => {
-            console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch(error => {
-            console.error('Service Worker registration failed:', error);
-        });
-    });
+  window.addEventListener('load', () => {
+      navigator.serviceWorker.register('firebase-messaging-sw.js')
+      .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch(error => {
+          console.error('Service Worker registration failed:', error);
+      });
+  });
 }
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -20,8 +20,8 @@ import {
   getFirestore,
   increment,
   setDoc,
-  updateDoc,
   Timestamp,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { app } from "./firebase-config.js";
 
@@ -29,50 +29,49 @@ import { app } from "./firebase-config.js";
 export const auth = getAuth(app);
 const db = getFirestore(app);
 
-
 const newsData = [
-  {
-    title: "Breaking News: AI Takes Over",
-    summary: "AI is now dominating the tech industry.",
-    news: "AI technology is advancing rapidly, taking over industries from healthcare to finance...",
-    category: "technology"
-  },
-  {
-    title: "Climate Change Summit",
-    summary: "World leaders gather to discuss climate change.",
-    news: "World leaders have come together to discuss climate change at the annual summit...",
-    category: "science"
-  },
-  {
-    title: "New Smartphone Released",
-    summary: "The latest smartphone with advanced features is now available.",
-    news: "The new smartphone boasts cutting-edge technology, including a foldable screen...",
-    category: "technology"
-  },
-  {
-    title: "Stock Market Hits Record High",
-    summary: "Major indices reach all-time highs.",
-    news: "The stock market surged today as investors reacted positively to economic data...",
-    category: "business"
-  },
-  {
-    title: "New Cancer Treatment Breakthrough",
-    summary: "Researchers announce promising results.",
-    news: "A new treatment approach shows 80% success rate in early trials...",
-    category: "health"
-  },
-  {
-    title: "Oscar Nominations Announced",
-    summary: "See the full list of nominees.",
-    news: "The Academy has revealed this year's Oscar nominations with several surprises...",
-    category: "entertainment"
-  },
-  {
-    title: "World Cup Finals Set",
-    summary: "Top teams advance to championship.",
-    news: "After intense semifinal matches, the stage is set for an exciting final...",
-    category: "sports"
-  }
+{
+  title: "Breaking News: AI Takes Over",
+  summary: "AI is now dominating the tech industry.",
+  news: "AI technology is advancing rapidly, taking over industries from healthcare to finance...",
+  category: "technology"
+},
+{
+  title: "Climate Change Summit",
+  summary: "World leaders gather to discuss climate change.",
+  news: "World leaders have come together to discuss climate change at the annual summit...",
+  category: "science"
+},
+{
+  title: "New Smartphone Released",
+  summary: "The latest smartphone with advanced features is now available.",
+  news: "The new smartphone boasts cutting-edge technology, including a foldable screen...",
+  category: "technology"
+},
+{
+  title: "Stock Market Hits Record High",
+  summary: "Major indices reach all-time highs.",
+  news: "The stock market surged today as investors reacted positively to economic data...",
+  category: "business"
+},
+{
+  title: "New Cancer Treatment Breakthrough",
+  summary: "Researchers announce promising results.",
+  news: "A new treatment approach shows 80% success rate in early trials...",
+  category: "health"
+},
+{
+  title: "Oscar Nominations Announced",
+  summary: "See the full list of nominees.",
+  news: "The Academy has revealed this year's Oscar nominations with several surprises...",
+  category: "entertainment"
+},
+{
+  title: "World Cup Finals Set",
+  summary: "Top teams advance to championship.",
+  news: "After intense semifinal matches, the stage is set for an exciting final...",
+  category: "sports"
+}
 ];
 
 // Get user's news preferences from Firestore
@@ -331,21 +330,32 @@ async function loadAndDisplayNews() {
 }
 
 // Handle authentication state
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    console.log('User authenticated:', user.uid);
-    try {
-      await loadAndDisplayNews();
-    } catch (error) {
-      console.error('Error loading news:', error);
-      displayNews(newsData);
-    }
-  } else {
-    console.log('User not authenticated - redirecting to login');
-    window.location.href = 'login.html';
-  }
-});
 
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userDocRef);
+  
+      // If user exists in Firestore
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        if (!userData.tutorialCompleted) {
+          window.location.href = "tutorial.html";
+          return;
+        }
+      }
+  
+      console.log("User authenticated:", user.uid);
+      try {
+        await loadAndDisplayNews();
+      } catch (error) {
+        console.error("Error loading news:", error);
+        displayNews(newsData);
+      }
+    } else {
+      window.location.href = "login.html";
+    }
+  });
 
 document.getElementById("searchButton").addEventListener("click", () => {
   const searchTerm = document.getElementById("searchInput").value.toLowerCase();

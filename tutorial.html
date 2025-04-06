@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Shortify</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Shortify!</h1>
+        <p>This tutorial will help you understand how to use the app effectively.</p>
+        <ul>
+            <li>🔎 Browse and search for news quickly</li>
+            <li>📚 Bookmark articles for later</li>
+            <li>🗳️ Engage in polls and discussions</li>
+        </ul>
+        <button id="finish-tutorial-btn">Finish Tutorial</button>
+    </div>
+
+    <!-- Firebase App (required) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+    <!-- Your Firebase Config -->
+    <script type="module">
+        import { app } from './firebase-config.js';
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        document.getElementById("finish-tutorial-btn").addEventListener("click", async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+                await setDoc(userRef, { tutorialCompleted: true }, { merge: true });
+            }
+            localStorage.setItem("tutorialCompleted", "true");
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
