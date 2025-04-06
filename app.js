@@ -309,6 +309,33 @@ function filterNews() {
 
 window.filterNews = filterNews;
 
+// Dark mode functionality
+function toggleDarkMode() {
+  const body = document.body;
+  body.classList.toggle('dark-mode');
+
+  // Save preference to localStorage
+  const isDark = body.classList.contains('dark-mode');
+  localStorage.setItem('darkMode', isDark);
+  console.log("Button clicked!");
+
+}
+
+// Initialize dark mode from localStorage
+function initDarkMode() {
+  const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+  if (darkModeEnabled) {
+    document.body.classList.add('dark-mode');
+  }
+}
+
+// Attach listener when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  initDarkMode();
+  document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+});
+
+
 // Load and display news on page load
 async function loadAndDisplayNews() {
   try {
@@ -329,33 +356,47 @@ async function loadAndDisplayNews() {
   }
 }
 
-// Handle authentication state
+// Add logout function
+export function logout() {
+  return auth.signOut()
+    .then(() => {
+      console.log('User signed out');
+      window.location.href = 'login.html';
+    })
+    .catch(error => {
+      console.error('Error signing out:', error);
+    });
+}
 
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const userDocRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userDocRef);
+// Update UI based on auth state
+function updateAuthUI(user) {
+  const loginButtons = document.querySelectorAll('.login-button');
+  const logoutButtons = document.querySelectorAll('.logout-button');
   
-      // If user exists in Firestore
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        if (!userData.tutorialCompleted) {
-          window.location.href = "tutorial.html";
-          return;
-        }
-      }
-  
-      console.log("User authenticated:", user.uid);
-      try {
-        await loadAndDisplayNews();
-      } catch (error) {
-        console.error("Error loading news:", error);
-        displayNews(newsData);
-      }
-    } else {
-      window.location.href = "login.html";
+  if (user) {
+    loginButtons.forEach(btn => btn.style.display = 'none');
+    logoutButtons.forEach(btn => btn.style.display = 'block');
+  } else {
+    loginButtons.forEach(btn => btn.style.display = 'block');
+    logoutButtons.forEach(btn => btn.style.display = 'none');
+  }
+}
+
+// Handle authentication state
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    console.log('User authenticated:', user.uid);
+    try {
+      await loadAndDisplayNews();
+    } catch (error) {
+      console.error('Error loading news:', error);
+      displayNews(newsData);
     }
-  });
+  } else {
+    console.log('User not authenticated - redirecting to login');
+    window.location.href = 'login.html';
+  }
+});
 
 document.getElementById("searchButton").addEventListener("click", () => {
   const searchTerm = document.getElementById("searchInput").value.toLowerCase();

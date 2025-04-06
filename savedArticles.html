@@ -17,7 +17,8 @@
     <header>
       <h1>Your Saved Articles</h1>
       <nav>
-        <a href="index.html">Home</a>
+      <button id="darkModeToggle" class="dark-mode-toggle" title="Toggle Dark Mode">🌓</button>
+      <a href="index.html">Home</a>
         <a href="pollsdiscussions.html">Poll</a>
         <a href="savedArticles.html">Saved Articles</a>
         <a href="profile.html">Profile</a>
@@ -84,5 +85,10 @@
         }
       }, 5000); // Force hide after 5 seconds
     </script>
+    <script type="module">
+      import { initDarkModeToggle } from './darkmode.js';
+      document.addEventListener('DOMContentLoaded', initDarkModeToggle);
+    </script>
+    
   </body>
 </html>

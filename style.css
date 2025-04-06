@@ -668,3 +668,103 @@ button:hover {
   opacity: 0;
   pointer-events: none;
 }
+
+/* ===== DARK MODE STYLES ===== */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode header {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode nav {
+  background-color: #2d2d2d;
+}
+
+body.dark-mode section,
+body.dark-mode .news-item,
+body.dark-mode .poll,
+body.dark-mode .discussion,
+body.dark-mode #newsDetail,
+body.dark-mode #profile-details,
+body.dark-mode .preferences-section,
+body.dark-mode #saved-articles-list li,
+body.dark-mode #history-list li {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode .news-item h3,
+body.dark-mode #newsDetail h1,
+body.dark-mode .preferences-section h3,
+body.dark-mode #profile-details strong {
+  color: #bb86fc;
+}
+
+body.dark-mode button,
+body.dark-mode #searchButton,
+body.dark-mode #backButton,
+body.dark-mode #email-login-form button,
+body.dark-mode #register-btn,
+body.dark-mode #google-login-btn,
+body.dark-mode #back-btn,
+body.dark-mode #save-preferences-btn,
+body.dark-mode #cancel-preferences-btn,
+body.dark-mode #delete-account-btn,
+body.dark-mode .read-button,
+body.dark-mode .bookmark-button {
+  background-color: #3700b3;
+  color: white;
+}
+
+body.dark-mode button:hover,
+body.dark-mode #searchButton:hover,
+body.dark-mode #backButton:hover,
+body.dark-mode #email-login-form button:hover,
+body.dark-mode #register-btn:hover,
+body.dark-mode #google-login-btn:hover,
+body.dark-mode #back-btn:hover,
+body.dark-mode #save-preferences-btn:hover,
+body.dark-mode #cancel-preferences-btn:hover,
+body.dark-mode #delete-account-btn:hover,
+body.dark-mode .read-button:hover,
+body.dark-mode .bookmark-button:hover {
+  background-color: #6200ea;
+}
+
+body.dark-mode a,
+body.dark-mode #saved-articles-list li a,
+body.dark-mode #history-list li a {
+  color: #bb86fc;
+}
+
+body.dark-mode a:hover,
+body.dark-mode #saved-articles-list li a:hover,
+body.dark-mode #history-list li a:hover {
+  color: #9a67ea;
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
+
+body.dark-mode .dark-mode-toggle {
+  color: #bb86fc;
+}

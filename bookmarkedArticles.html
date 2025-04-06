@@ -16,17 +16,14 @@
   </div>
     <header>
       <h1>Your Bookmarked Articles</h1>
-      
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="pollsdiscussions.html">Poll</a>
-      <a href="savedArticles.html">Saved Articles</a>
-      <a href="bookmarkedArticles.html">Bookmarked Articles</a>
-      <a href="profile.html">Profile</a>
-      <a href="history.html"> History </a>
-      <button id="login-btn">Login</button>
-      <button id="logout-btn" style="display: none">Logout</button>
-    </nav>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="pollsdiscussions.html">Poll</a>
+        <a href="savedArticles.html">Saved Articles</a>
+        <a href="bookmarkedArticles.html">Bookmarked Articles</a>
+        <a href="history.html"> History </a>
+        <a href="profile.html">Profile</a>
+      </nav>
       <select id="tagFilter">
         <option value="">Filter by Tag</option>
       </select>
@@ -181,5 +178,10 @@
         }
       }, 5000); // Force hide after 5 seconds
     </script>
+    <script type="module">
+      import { initDarkModeToggle } from './darkmode.js';
+      document.addEventListener('DOMContentLoaded', initDarkModeToggle);
+    </script>
+    
   </body>
 </html>
