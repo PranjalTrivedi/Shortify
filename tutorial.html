@@ -1,47 +1,150 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome to Shortify</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="manifest" href="manifest.json" />
+  <title>Welcome to Shortify</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    body {
+      background-color: #f0f0f5;
+      color: #333;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #7b00ff;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    .tutorial-section {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .tutorial-section h2 {
+      color: #4b00b2;
+      margin-top: 0;
+    }
+
+    .tutorial-section p {
+      color: #555;
+      margin: 0.5em 0;
+    }
+
+    #finish-tutorial-btn {
+      display: block;
+      margin: 40px auto 0;
+      padding: 14px 28px;
+      background-color: #7b00ff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #finish-tutorial-btn:hover {
+      background-color: #4b00b2;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Shortify!</h1>
-        <p>This tutorial will help you understand how to use the app effectively.</p>
-        <ul>
-            <li>🔎 Browse and search for news quickly</li>
-            <li>📚 Bookmark articles for later</li>
-            <li>🗳️ Engage in polls and discussions</li>
-        </ul>
-        <button id="finish-tutorial-btn">Finish Tutorial</button>
+  <div class="container">
+    <h1>Welcome to Shortify!</h1>
+    <p style="text-align:center;">Here’s everything you need to know to make the most of your Shortify experience.</p>
+
+    <div class="tutorial-section">
+      <h2>🔐 Account & Login</h2>
+      <p>Create an account or log in to access personalized features like bookmarks and history.</p>
+      <p>Your session is secure and synced with our cloud database.</p>
     </div>
 
-    <!-- Firebase App (required) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <div class="tutorial-section">
+      <h2>🔎 Browse & Search News</h2>
+      <p>Get fast, summarized news stories organized by categories like tech, health, sports, and more.</p>
+      <p>Use the search bar to quickly find articles based on keywords and trends.</p>
+    </div>
 
-    <!-- Your Firebase Config -->
-    <script type="module">
-        import { app } from './firebase-config.js';
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <div class="tutorial-section">
+      <h2>📚 Bookmark Your Favorites</h2>
+      <p>Click the <strong>⭐ Bookmark</strong> icon on any article to save it for later.</p>
+      <p>Access your bookmarks anytime under the "Bookmarked Articles" section.</p>
+    </div>
 
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    <div class="tutorial-section">
+      <h2>📊 Personalized Feed</h2>
+      <p>Shortify tailors your feed based on your selected preferences (science, tech, business, etc.).</p>
+      <p>Update your interests anytime to explore more of what you love.</p>
+    </div>
 
-        document.getElementById("finish-tutorial-btn").addEventListener("click", async () => {
-            const user = auth.currentUser;
-            if (user) {
-                const userRef = doc(db, "users", user.uid);
-                await setDoc(userRef, { tutorialCompleted: true }, { merge: true });
-            }
-            localStorage.setItem("tutorialCompleted", "true");
-            window.location.href = "index.html";
-        });
-    </script>
+    <div class="tutorial-section">
+      <h2>🗳️ Polls & Discussions</h2>
+      <p>Share your opinions through quick polls and open discussions with other users.</p>
+      <p>It’s your space to be heard and discover community sentiment.</p>
+    </div>
+
+    <div class="tutorial-section">
+      <h2>💬 Comments & Interaction</h2>
+      <p>Comment on news, like posts, and engage with the Shortify community.</p>
+      <p>Stay respectful and be part of healthy conversations.</p>
+    </div>
+
+    <div class="tutorial-section">
+      <h2>🔔 Notifications</h2>
+      <p>Receive updates on trending topics, breaking news, and poll results.</p>
+      <p>You can control notification settings from your browser or app settings.</p>
+    </div>
+
+    <div class="tutorial-section">
+      <h2>📱 Progressive Web App (PWA)</h2>
+      <p>Install Shortify on your home screen for app-like access.</p>
+      <p>Use it offline and enjoy a smooth, mobile-optimized experience.</p>
+    </div>
+
+    <button id="finish-tutorial-btn">Finish Tutorial & Continue</button>
+  </div>
+
+  <!-- Firebase App (required) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+  <!-- Firebase Config & Logic -->
+  <script type="module">
+    import { app } from './firebase-config.js';
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    document.getElementById("finish-tutorial-btn").addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, { tutorialCompleted: true }, { merge: true });
+      }
+      localStorage.setItem("tutorialCompleted", "true");
+      window.location.href = "index.html";
+    });
+  </script>
 </body>
 </html>
+
