@@ -37,12 +37,22 @@ self.addEventListener('message', (event) => {
     }
 
     console.log('[SW] Attempting to show notification:', title);
-    self.registration.showNotification(title, {
+    const options = {
         body: body || "No content available",
-        icon: icon || "/default-icon.png"
-    }).then(() => {
-        console.log('[SW] Notification shown successfully');
+        icon: '/assets/icon-192x192.png',
+        badge: '/assets/badge.png',
+        vibrate: [200, 100, 200],
+        data: {
+            url: '/savedArticles.html'
+        }
+    };
+    
+    self.registration.showNotification(title, options)
+    .then(() => {
+        console.log('[SW] PWA notification shown successfully');
     }).catch(err => {
-        console.error('[SW] Failed to show notification:', err);
+        console.error('[SW] Failed to show PWA notification:', err);
+        // Fallback to regular notification if PWA notification fails
+        new Notification(title, options);
     });
 });
