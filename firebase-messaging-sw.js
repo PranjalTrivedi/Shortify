@@ -25,3 +25,12 @@ onBackgroundMessage(messaging, (payload) => {
         icon: icon || "/default-icon.png"
     });
 });
+
+// Listen for messages from the main script
+self.addEventListener('message', (event) => {
+    const { title, body, icon } = event.data;
+    self.registration.showNotification(title, {
+        body: body || "No content available",
+        icon: icon || "/default-icon.png"
+    });
+});

@@ -54,9 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
         await Notification.requestPermission();
       }
 
-      // Show a notification if permission is granted
-      if (Notification.permission === "granted") {
-        new Notification("Article Saved!", {
+      // Send a message to the service worker to show a notification
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          title: "Article Saved!",
           body: `"${article.title}" has been saved successfully.`,
           icon: "/path-to-your-icon.png", // Change this to your app's icon
         });
