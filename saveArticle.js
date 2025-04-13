@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({
           title: "Article Saved!",
-          body: `"${article.title}" has been saved successfully.`,
+          body: `Saved Article: "${article.title}"`,
           icon: "/path-to-your-icon.png", // Change this to your app's icon
         });
       }
