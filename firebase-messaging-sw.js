@@ -49,15 +49,24 @@ self.addEventListener('message', (event) => {
         }
     };
 
-    // Handle notification click
+    // Setup notification click handler once (not inside message listener)
     self.addEventListener('notificationclick', (event) => {
         event.notification.close();
-        if (event.action === 'open') {
-            clients.openWindow(event.notification.data.url);
-        } else {
-            // Default action
-            clients.openWindow('/savedArticles.html');
-        }
+        const url = event.notification.data?.url || '/savedArticles.html';
+        event.waitUntil(
+            clients.matchAll({type: 'window'}).then(windowClients => {
+                // Check if there's already a window/tab open with the target URL
+                for (const client of windowClients) {
+                    if (client.url === url && 'focus' in client) {
+                        return client.focus();
+                    }
+                }
+                // If not, open a new window/tab
+                if (clients.openWindow) {
+                    return clients.openWindow(url);
+                }
+            })
+        );
     });
     
     self.registration.showNotification(title, options)
