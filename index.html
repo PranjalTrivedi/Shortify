@@ -9,10 +9,27 @@
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
-    <div class="loader-wrapper">
-      <div class="loader"></div>
-      <div class="loader-text">Loading Shortify...</div>
+    <div class="splash-screen" id="splashScreen">
+      <div class="splash-content">
+        <img src="assets/icon-512x512.png" alt="Shortify Logo" class="splash-logo">
+        <div class="splash-loader">
+          <div class="splash-spinner"></div>
+        </div>
+        <div class="splash-text">Loading your news experience...</div>
+        <div class="splash-progress">
+          <div class="splash-progress-bar"></div>
+        </div>
+      </div>
     </div>
+    <script>
+      // Hide splash screen after 3 seconds
+      setTimeout(() => {
+        document.getElementById('splashScreen').style.opacity = '0';
+        setTimeout(() => {
+          document.getElementById('splashScreen').style.display = 'none';
+        }, 500); // Match this with the CSS transition time
+      }, 3000);
+    </script>
     <header>
       <h1 id="welcome">Welcome to Shortify</h1>
       <div class="search-container">
@@ -76,7 +93,7 @@
 
     <script type="module">
       import { auth } from "./app.js";
-      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
       onAuthStateChanged(auth, (user) => {
         if (user) {

@@ -4,8 +4,8 @@
     "start_url": "/index.html",
     "scope": "./",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#ffffff",
+    "background_color": "#6200ea",
+    "theme_color": "#6200ea",
     "description": "Stay updated with the latest news in short, easy-to-read summaries.",
     "icons": [
       {
@@ -31,6 +31,12 @@
         "type": "image/png",
         "form_factor": "wide"
       }
+    ],
+    "splash_pages": [
+      {
+        "src": "./assets/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
     ]
-  }
-  
+}
