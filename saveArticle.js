@@ -57,9 +57,17 @@ document.addEventListener("DOMContentLoaded", function () {
       // Send a message to the service worker to show a notification
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({
-          title: "Your Article Saved!",
-          body: `Saved Article: "${article.title}"`,
-          icon: "/path-to-your-icon.png", 
+          title: "Shortify: Article Saved",
+          body: `"${article.title}"\n${article.content.substring(0, 100)}...`,
+          icon: "/assets/icon-192x192.png",
+          image: "/assets/text.png",
+          actions: [
+            {action: "open", title: "Read Now"},
+            {action: "save", title: "Save for Later"}
+          ],
+          data: {
+            url: window.location.href
+          }
         });
       }
     } catch (error) {

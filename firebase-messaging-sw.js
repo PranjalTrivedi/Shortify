@@ -42,10 +42,23 @@ self.addEventListener('message', (event) => {
         icon: '/assets/icon-192x192.png',
         badge: '/assets/badge.png',
         vibrate: [200, 100, 200],
+        image: event.data.image,
+        actions: event.data.actions || [],
         data: {
-            url: '/savedArticles.html'
+            url: event.data.url || '/savedArticles.html'
         }
     };
+
+    // Handle notification click
+    self.addEventListener('notificationclick', (event) => {
+        event.notification.close();
+        if (event.action === 'open') {
+            clients.openWindow(event.notification.data.url);
+        } else {
+            // Default action
+            clients.openWindow('/savedArticles.html');
+        }
+    });
     
     self.registration.showNotification(title, options)
     .then(() => {
