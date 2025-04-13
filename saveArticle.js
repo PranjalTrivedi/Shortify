@@ -54,20 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
         await Notification.requestPermission();
       }
 
-      // Send a message to the service worker to show a notification
-      if (navigator.serviceWorker.controller) {
-        navigator.serviceWorker.controller.postMessage({
-          title: "Shortify: Article Saved",
-          body: `"${article.title}"\n${article.content.substring(0, 100)}...`,
-          icon: "/assets/icon-192x192.png",
-          image: "/assets/text.png",
-          actions: [
-            {action: "open", title: "Read Now"},
-            {action: "save", title: "Save for Later"}
-          ],
-          data: {
-            url: window.location.href
-          }
+      // Show a notification if permission is granted
+      if (Notification.permission === "granted") {
+        new Notification("Article Saved!", {
+          body: `"${article.title}" has been saved successfully.`,
+          icon: "/path-to-your-icon.png", // Change this to your app's icon
         });
       }
     } catch (error) {
