@@ -55,12 +55,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Send a message to the service worker to show a notification
-      if (navigator.serviceWorker.controller) {
+      console.log('Checking service worker controller...');
+      if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+        console.log('Service worker controller available, posting message');
         navigator.serviceWorker.controller.postMessage({
-          title: "Article Saved!",
+          title: "Your Article Saved!",
           body: `Saved Article: "${article.title}"`,
-          icon: "/path-to-your-icon.png", // Change this to your app's icon
+          icon: "/assets/icon-192x192.png"
         });
+      } else {
+        console.error('Service worker controller not available');
       }
     } catch (error) {
       console.error("Error saving article:", error);

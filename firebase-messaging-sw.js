@@ -28,9 +28,21 @@ onBackgroundMessage(messaging, (payload) => {
 
 // Listen for messages from the main script
 self.addEventListener('message', (event) => {
+    console.log('[SW] Received message from main script:', event.data);
     const { title, body, icon } = event.data;
+    
+    if (!self.registration) {
+        console.error('[SW] Service worker registration not available');
+        return;
+    }
+
+    console.log('[SW] Attempting to show notification:', title);
     self.registration.showNotification(title, {
         body: body || "No content available",
         icon: icon || "/default-icon.png"
+    }).then(() => {
+        console.log('[SW] Notification shown successfully');
+    }).catch(err => {
+        console.error('[SW] Failed to show notification:', err);
     });
 });
